@@ -1,9 +1,9 @@
-import Elements from '../../../components/pickbazar/elements';
-import Aside from '../../../components/pickbazar/aside';
-import Header from '../../../components/pickbazar/header';
-import BurgerMenu from '../../../components/pickbazar/burgermenu';
-import BurgerHeader from '../../../components/pickbazar/burgerheader';
-import CartButton from '../../../components/pickbazar/cartbutton';
+import Elements from '../../components/pickbazar/elements';
+import Aside from '../../components/pickbazar/aside';
+import Header from '../../components/pickbazar/header';
+import BurgerMenu from '../../components/pickbazar/burgermenu';
+import BurgerHeader from '../../components/pickbazar/burgerheader';
+import CartButton from '../../components/pickbazar/cartbutton';
 
 import { useQuery, gql } from "@apollo/client";
 
