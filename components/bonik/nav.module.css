@@ -1,0 +1,104 @@
+.container {
+    position: relative;
+    height: 60px;
+    background: rgb(255, 255, 255);
+    box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
+}
+.bar {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    -webkit-box-pack: justify;
+    justify-content: space-between;
+    -webkit-box-align: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+}
+.button_wrapper {
+    position: relative;
+}
+.button {
+    display: flex;
+    width: unset;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    outline: none;
+    cursor: pointer;
+    padding: 11px 1.5rem;
+    font-weight: 600;
+    color: rgb(43, 52, 69);
+    background: rgb(246, 249, 252);
+    transition: all 150ms ease-in-out 0s;
+    line-height: 1;
+    border: none;
+    height: 40px;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.right_menu_wrapper {
+    display: flex;
+    flex-direction: row;
+    box-shadow: none;
+    cursor: unset;
+}
+.nav_item_wrapper {
+    display: flex;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+    box-shadow: none;
+    cursor: unset;
+    position: relative;
+    flex-direction: column;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.nav_item {
+    font-size: 14px;
+    margin-right: 32px;
+    cursor: pointer;
+}
+.nav_item_wrapper:hover .subnav_wrapper_outer {
+    display: block;
+}
+
+.subnav_wrapper_outer {
+    display: none;
+    position: absolute;
+    left: 0px;
+    top: 100%;
+    z-index: 5;
+    box-shadow: none;
+    cursor: unset;
+}
+.subnav_wrapper_inner {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(3 0 71 / 9%) 0px 8px 45px;
+    border-radius: 8px;
+    margin-top: 1.25rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    min-width: 230px;
+}
+.subnav_item_wrapper_outer {
+    position: relative;
+    color: rgb(233, 69, 96);
+    transition: all 150ms ease-in-out 0s;
+    text-decoration: none;
+}
+.subnav_item_wrapper_inner {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    word-break: break-all;
+    color: rgb(55, 63, 80);
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+}
+.subnav_item {
+    font-size: 14px;
+}
