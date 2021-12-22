@@ -136,7 +136,7 @@
     -webkit-box-flex: 1;
     flex-grow: 1;
 }
-.left_menu_wrapper_inner:hover .mega_menu_wrapper_4 {
+.left_menu_wrapper_inner:hover > .mega_menu_wrapper_4 {
     display: block;
 }
 
@@ -204,9 +204,12 @@
     white-space: pre;
     transition: all 250ms ease-in-out 0s;
 }
-.regularmenu_item_wrapper_outer:hover .regularmenu_item_wrapper {
+.regularmenu_item_wrapper_outer:hover > .regularmenu_item_wrapper {
     color: rgb(233, 69, 96);
     background: rgb(255, 225, 230)
+}
+.regularmenu_item_wrapper_outer:hover > .mega_menu_wrapper_4 {
+    display: block;
 }
 .regularmenu_item {
     padding-left: 0.75rem;
