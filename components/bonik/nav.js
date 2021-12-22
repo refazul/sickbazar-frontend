@@ -15,16 +15,16 @@ function NavLeft({ items }) {
     return (
         <div className={navstyles.button_wrapper}>
             <button className={navstyles.button}>Categories</button>
-            <div className={navstyles.left_menu_wrapper_outer}>
+            <div className={navstyles.nav_left_container}>
                 {
                     items.map((item) => {
                         return (
-                            <div key={item.title} className={navstyles.left_menu_wrapper_inner}>
-                                <div className={navstyles.left_menu_wrapper}>
-                                    <span className={navstyles.left_menu_item}>{item.title}</span>
+                            <div key={item.title} className={navstyles.nav_left_wrapper_inner}>
+                                <div className={navstyles.nav_left_item_wrapper}>
+                                    <span className={navstyles.nav_left_item}>{item.title}</span>
                                 </div>
                                 {
-                                    item.type === "megamenu" ? <MegaMenu title={item.title} items={item.children}></MegaMenu> : <RegularMenu title={item.title} children={item.children}></RegularMenu>
+                                    item.type === "NavLeftMega" ? <NavLeftMega {...item}></NavLeftMega> : <NavLeftRegular {...item}></NavLeftRegular>
                                 }
                             </div>
                         )
@@ -34,19 +34,19 @@ function NavLeft({ items }) {
         </div>
     )
 }
-function RegularMenu({ children }) {
+function NavLeftRegular({ children }) {
     return (
-        <div className={navstyles.mega_menu_wrapper_4}>
-            <div className={`${navstyles.mega_menu_wrapper_3} ${navstyles.mega_menu_wrapper_3_sm}`}>
+        <div className={navstyles.nav_left_wrapper_outermost}>
+            <div className={`${navstyles.nav_left_wrapper_outer} ${navstyles.mega_menu_wrapper_3_sm}`}>
                 {
                     children.map((item) => {
                         return (
-                            <div className={navstyles.regularmenu_item_wrapper_outer}>
-                                <div className={navstyles.regularmenu_item_wrapper}>
-                                    <span className={navstyles.regularmenu_item}>{item.title}</span>
+                            <div className={navstyles.nav_left_wrapper_inner}>
+                                <div className={navstyles.nav_left_item_wrapper}>
+                                    <span className={navstyles.nav_left_item}>{item.title}</span>
                                 </div>
                                 {
-                                    item.children && item.children.length > 0 ? <RegularMenu title={item.title} children={item.children}></RegularMenu> : <div></div>
+                                    item.children && item.children.length > 0 ? item.type == "NavLeftMega" ? <NavLeftMega {...item}></NavLeftMega> : <NavLeftRegular {...item}></NavLeftRegular> : <div></div>
                                 }
                             </div>
                         )
@@ -59,22 +59,22 @@ function RegularMenu({ children }) {
 
 
 
-function MegaMenu({ title, items }) {
+function NavLeftMega({ children }) {
     return (
-        <div className={navstyles.mega_menu_wrapper_4}>
-            <div className={`${navstyles.mega_menu_wrapper_3} ${navstyles.mega_menu_wrapper_3_lg}`}>
-                <div className={navstyles.mega_menu_wrapper_2}>
-                    <div className={navstyles.mega_menu_wrapper_1}>
-                        <div className={navstyles.mega_menu_wrapper}>
+        <div className={navstyles.nav_left_wrapper_outermost}>
+            <div className={`${navstyles.nav_left_wrapper_outer} ${navstyles.mega_menu_wrapper_3_lg}`}>
+                <div className={navstyles.nav_left_mega_container}>
+                    <div className={navstyles.nav_left_mega_wrapper_outermost}>
+                        <div className={navstyles.nav_left_mega_wrapper_outer}>
                             {
-                                items.map((item) => {
+                                children.map((item) => {
                                     return (
-                                        <div className={navstyles.mega_menu}>
-                                            <a className={navstyles.mega_menu_item}>{item.title}</a>
+                                        <div className={navstyles.nav_left_mega_wrapper_inner}>
+                                            <a className={navstyles.nav_left_mega_item}>{item.title}</a>
                                             {
                                                 item.children.map((children) => {
                                                     return (
-                                                        <a className={`${navstyles.mega_menu_item} ${navstyles.mega_menu_item_child}`}>{children.title}</a>
+                                                        <a className={`${navstyles.nav_left_mega_item} ${navstyles.nav_left_mega_item_child}`}>{children.title}</a>
                                                     )
                                                 })
                                             }
