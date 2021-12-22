@@ -102,3 +102,114 @@
 .subnav_item {
     font-size: 14px;
 }
+
+.left_menu_wrapper_outer {
+    position: absolute;
+    padding: 0.5rem 0px;
+    left: 0px;
+    right: auto;
+    top: calc(100% + 0.7rem);
+    border-radius: 4px;
+    transform: scaleY(1);
+    transform-origin: center top;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
+    transition: all 250ms ease-in-out 0s;
+    z-index: 98;
+}
+.left_menu_wrapper_inner {
+
+}
+.left_menu_wrapper {
+    cursor: pointer;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 1rem;
+    height: 40px;
+    min-width: 278px;
+    white-space: pre;
+    transition: all 250ms ease-in-out 0s
+}
+.left_menu_item {
+    padding-left: 0.75rem;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+}
+.left_menu_wrapper_inner:hover .mega_menu_wrapper_4 {
+    display: block;
+}
+
+.mega_menu_wrapper_4 {
+    display: none;
+    position: absolute;
+    left: 100%;
+    right: auto;
+    top: 0px;
+    z-index: 99;
+}
+.mega_menu_wrapper_3 {
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgb(43 52 69 / 10%) 0px 4px 16px;
+    border-radius: 8px;
+    margin-left: 1rem;
+}
+.mega_menu_wrapper_3_sm {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+}
+.mega_menu_wrapper_3_lg {
+    min-width: 760px;
+}
+.mega_menu_wrapper_3_md {
+    min-width: 560px;
+}
+.mega_menu_wrapper_2 {
+    display: flex;
+    flex-direction: row;
+    padding: 0.875rem 1.25rem;
+}
+.mega_menu_wrapper_1 {
+    box-shadow: none;
+    cursor: unset;
+    flex: 1 1 0px;
+}
+.mega_menu_wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    height: unset;
+    margin: -0.5rem;
+}
+.mega_menu {
+    padding: 0.5rem;
+    width: 25%;
+}
+.mega_menu_item {
+    color: inherit;
+    font-weight: 600;
+    display: block;
+    padding: 0.5rem 0px;
+}
+.mega_menu_item_child {
+    font-weight: 400;
+}
+.regularmenu_item_wrapper {
+    cursor: pointer;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 0px 1rem;
+    height: 40px;
+    min-width: 278px;
+    white-space: pre;
+    transition: all 250ms ease-in-out 0s;
+}
+.regularmenu_item_wrapper_outer:hover .regularmenu_item_wrapper {
+    color: rgb(233, 69, 96);
+    background: rgb(255, 225, 230)
+}
+.regularmenu_item {
+    padding-left: 0.75rem;
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+}
