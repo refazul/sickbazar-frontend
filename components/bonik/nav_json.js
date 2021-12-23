@@ -1,7 +1,7 @@
 module.exports =
     [
         {
-            "title": "Fashion",
+            "title": "Product",
             "type": "NavLeftMega",
             "children": [
                 {
@@ -79,7 +79,7 @@ module.exports =
             ],
         },
         {
-            "title": "Bikes",
+            "title": "Items",
             "children": [
                 {
                     "title": "Man",
@@ -215,5 +215,37 @@ module.exports =
                     "title": "Baby Girl",
                 }
             ]
-        }
+        },
+        {
+            "title": "Features",
+            "children": []
+        },
+        {
+            "title": "Demoes",
+            "children": []
+        },
+        {
+            "title": "FAQ",
+            "children": []
+        },
+        {
+            "title": "About US",
+            "children": []
+        },
+        {
+            "title": "Contact US",
+            "children": []
+        },
+        {
+            "title": "Getting Started",
+            "children": []
+        },
+        {
+            "title": "Pricing",
+            "children": []
+        },
+        {
+            "title": "Join",
+            "children": []
+        },
     ]
