@@ -1,5 +1,6 @@
 import navstyles from './nav.module.css'
 import mega_menu_json from './nav_json'
+import React, { useState, useEffect } from 'react';
 
 export default function Nav() {
     return (
@@ -12,10 +13,15 @@ export default function Nav() {
     );
 }
 function NavLeft({ items }) {
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+        // Update the document title using the browser API
+        document.title = `You clicked ${count} times`;
+    });
     return (
         <div className={navstyles.button_wrapper}>
-            <button className={navstyles.button}>Categories</button>
-            <div className={navstyles.nav_left_container}>
+            <button className={navstyles.button} onClick={() => setCount(count + 1)}>Categories</button>
+            <div className={`${navstyles.nav_left_container} ` + (count % 2 == 0 ? ' hidden ' : '')}>
                 {
                     items.map((item) => {
                         return (

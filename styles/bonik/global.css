@@ -1,0 +1,13 @@
+body {
+    padding: 0px;
+    margin: 0px;
+    font-size: 14px;
+    background: rgb(246, 249, 252);
+    color: rgb(43, 52, 69);
+    transition: all 0.5s linear 0s;
+    font-family: "Open Sans", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+    line-height: 1.5;
+}
+.hidden {
+    display: none !important;
+}
