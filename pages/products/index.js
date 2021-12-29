@@ -1,11 +1,12 @@
+import { useRouter } from 'next/router';
 export default function ProductList({ products }) {
+    const router = useRouter();
     return (
         <div>
             {
                 products.map((product) => {
-                    console.log(product);
                     return (
-                        <div>
+                        <div onClick={() => {router.push('/products/' + product.id)}}>
                             <div>{product.title}</div>
                             <div>{product.description}</div>
                         </div>

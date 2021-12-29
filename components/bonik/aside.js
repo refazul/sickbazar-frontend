@@ -3,7 +3,15 @@ import {useRouter} from 'next/router';
 
 import asidestyles from './aside.module.css';
 
-export default function Aside({ items }) {
+const items = [
+    { "title": "Dashboard", "link": "/dashboard" },
+    { "title": "Products", "link": "/products" },
+    { "title": "Add New Product", "link": "/products/new" },
+    { "title": "Orders", "link": "/orders" },
+    { "title": "Account Settings", "link": "/settings" },
+]
+
+export default function Aside() {
     const router = useRouter()
     return (
         <div className={asidestyles.aside_container}>
@@ -11,7 +19,6 @@ export default function Aside({ items }) {
                 {
                     items.map((item) => {
                         const active = router.pathname === item.link;
-                        console.log(router.pathname, item.link, active);
                         return (
                             <a className={`${asidestyles.aside_item_wrapper} ${active ? asidestyles.aside_item_wrapper_active : ''}`}>
                                 <div className={asidestyles.aside_item_wrapper_inner} onClick={() => router.push(item.link)}>
