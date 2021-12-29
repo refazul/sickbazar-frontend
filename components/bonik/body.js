@@ -3,15 +3,15 @@ import Aside from './aside';
 import Form from './form';
 
 import React from 'react'
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
 
 const items = [
-    { "title": "Dashboard", },
-    { "title": "Products", },
-    { "title": "Add New Product", },
-    { "title": "Orders", },
-    { "title": "Account Settings", },
+    { "title": "Dashboard", "link": "/dashboard" },
+    { "title": "Products", "link": "/products" },
+    { "title": "Add New Product", "link": "/products/new" },
+    { "title": "Orders", "link": "/orders" },
+    { "title": "Account Settings", "link": "/settings" },
 ]
 
 const fields = [
