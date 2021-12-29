@@ -2,6 +2,10 @@ import bodystyles from './body.module.css';
 import Aside from './aside';
 import Form from './form';
 
+import React from 'react'
+import {useRouter} from 'next/router';
+
+
 const items = [
     { "title": "Dashboard", },
     { "title": "Products", },
@@ -16,6 +20,7 @@ const fields = [
 ]
 
 export default function Body() {
+    const router = useRouter()
     return (
         <div className={bodystyles.container}>
             <div className={bodystyles.wrapper}>
@@ -40,7 +45,7 @@ function Right() {
                     <div classname={bodystyles.body_right_title_wrapper}>
                         <h2 className={bodystyles.body_right_title}>Edit Product</h2>
                     </div>
-                    <button className={bodystyles.body_right_button}>Back to Product List</button>
+                    <button className={`${bodystyles.body_right_button} red`}>Back to Product List</button>
                 </div>
             </div>
             <Form fields={fields}></Form>

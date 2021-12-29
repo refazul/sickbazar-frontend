@@ -51,20 +51,5 @@
 .body_right_button {
     display: flex;
     width: unset;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    padding: 11px 2rem;
-    font-weight: 600;
-    color: rgb(233, 69, 96);
-    background: rgb(255, 225, 230);
-    transition: all 150ms ease-in-out 0s;
-    line-height: 1;
     height: 40px;
-    font-size: 14px;
-    border-radius: 5px;
 }
