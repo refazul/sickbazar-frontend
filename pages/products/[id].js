@@ -1,41 +1,53 @@
 import { useRouter } from 'next/router';
 import { gql, useQuery } from '@apollo/client';
 
-const query = gql`
-query Query($productId: ID!) {
-    readProduct(productID: $productId) {
-      title
-      description
-    }
-  }
-`
-
 export default function ProductDetail({ product }) {
-    const router = useRouter();
-    const { id } = router.query;
-    if (!product) {
-        const { loading, error, data } = useQuery(query, { variables: { "productId": "61c1648d8c07fed19f5a9ac5" } })
-
-        if (loading) return <p>Loading...</p>;
-        if (error) return <p>Error :(</p>;
-    }
+    console.log(product);
     return (
         <div>
-            <div>{id}</div>
+            <div>{product.id}</div>
             <div>{product.title}</div>
             <div>{product.description}</div>
         </div>
     )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(context) {
+    const { id } = context.query;
+
+    const API_URL = 'https://graphql.crescentcoder.com/graphql'
+    const query = `
+        query ReadProduct($productId: ID!) {
+            readProduct(productID: $productId) {
+                title
+                description
+                id
+            }
+        }
+    `;
+    const variables = { "productId": id }
+    const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query,
+            variables,
+        }),
+    })
+
+    const json = await res.json()
+    
+    /*
     const json = [
         { "title": "RTX 3080", "description": "non LHR" },
     ]
+    */
 
     return {
         props: {
-            product: json[0]
+            product: json.data.readProduct
         }
     }
 }

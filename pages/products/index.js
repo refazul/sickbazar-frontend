@@ -18,14 +18,33 @@ export default function ProductList({ products }) {
 }
 
 export async function getServerSideProps() {
-    const json = [
-        { "title": "RTX 3080", "description": "non LHR", "id": 1 },
-        { "title": "RTX 3090", "description": "LHR doesn't matter", "id": 2 },
-    ]
+    const API_URL = 'https://graphql.crescentcoder.com/graphql'
+    const query = `
+        query Query($title: String!) {
+            readProducts(title: $title) {
+                title
+                description
+                id
+            }
+        }
+    `;
+    const variables = { "title": "" }
+    const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            query,
+            variables,
+        }),
+    })
+
+    const json = await res.json()
 
     return {
         props: {
-            products: json
+            products: json.data.readProducts
         }
     }
 }
