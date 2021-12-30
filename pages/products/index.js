@@ -6,9 +6,12 @@ export default function ProductList({ products }) {
             {
                 products.map((product) => {
                     return (
-                        <div onClick={() => {router.push('/products/' + product.id)}}>
-                            <div>{product.title}</div>
-                            <div>{product.description}</div>
+                        <div>
+                            <div onClick={() => { router.push('/products/' + product.id) }}>
+                                <div>{product.title}</div>
+                                <div>{product.description}</div>
+                            </div>
+                            <div onClick={() => { router.push('/products/' + product.id + '/edit') }}>Edit</div>
                         </div>
                     )
                 })

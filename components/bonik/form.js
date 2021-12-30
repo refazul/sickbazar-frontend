@@ -1,6 +1,6 @@
 import formstyles from './form.module.css';
 
-export default function Form({ fields, onSubmit }) {
+export default function Form({ fields, values, onSubmit, id }) {
     return (
         <div className={formstyles.form_content_container}>
             <form onSubmit={onSubmit}>
@@ -12,7 +12,7 @@ export default function Form({ fields, onSubmit }) {
                                     <div className={formstyles.form_item_wrapper}>
                                         <label className={formstyles.form_label}>{field.title}</label>
                                         <div className={formstyles.form_input_wrapper}>
-                                            <input name={field.id} placeholder={field.title} className={formstyles.form_input} />
+                                            <input name={field.name} value={values[field.name]} placeholder={field.title} className={formstyles.form_input} />
                                         </div>
                                         <small className={formstyles.form_sub}>{field.isReq ? "required" : ""}</small>
                                     </div>
@@ -20,6 +20,7 @@ export default function Form({ fields, onSubmit }) {
                             )
                         })
                     }
+                    <input type="hidden" name="id" value={id} />
                     <button type="submit">Submit</button>
                 </div>
             </form>
