@@ -1,9 +1,9 @@
 import formstyles from './form.module.css';
 
-export default function Form({ fields }) {
+export default function Form({ fields, onSubmit }) {
     return (
         <div className={formstyles.form_content_container}>
-            <form>
+            <form onSubmit={onSubmit}>
                 <div className={formstyles.form_content_wrapper}>
                     {
                         fields.map((field) => {
@@ -20,6 +20,7 @@ export default function Form({ fields }) {
                             )
                         })
                     }
+                    <button type="submit">Submit</button>
                 </div>
             </form>
         </div>
