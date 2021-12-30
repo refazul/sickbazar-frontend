@@ -1,5 +1,4 @@
-import { useRouter } from 'next/router';
-import { gql, useQuery } from '@apollo/client';
+import { readProduct } from '../../services/product';
 
 export default function ProductDetail({ product }) {
     console.log(product);
@@ -14,40 +13,8 @@ export default function ProductDetail({ product }) {
 
 export async function getServerSideProps(context) {
     const { id } = context.query;
-
-    const API_URL = 'https://graphql.crescentcoder.com/graphql'
-    const query = `
-        query ReadProduct($productId: ID!) {
-            readProduct(productID: $productId) {
-                title
-                description
-                id
-            }
-        }
-    `;
-    const variables = { "productId": id }
-    const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query,
-            variables,
-        }),
-    })
-
-    const json = await res.json()
-    
-    /*
-    const json = [
-        { "title": "RTX 3080", "description": "non LHR" },
-    ]
-    */
-
+    const product = await readProduct(id);
     return {
-        props: {
-            product: json.data.readProduct
-        }
+        props: { product }
     }
 }

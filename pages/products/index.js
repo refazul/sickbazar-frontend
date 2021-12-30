@@ -1,4 +1,5 @@
 import { useRouter } from 'next/router';
+import { readProducts } from '../../services/product';
 export default function ProductList({ products }) {
     const router = useRouter();
     return (
@@ -21,33 +22,8 @@ export default function ProductList({ products }) {
 }
 
 export async function getServerSideProps() {
-    const API_URL = 'https://graphql.crescentcoder.com/graphql'
-    const query = `
-        query Query($title: String!) {
-            readProducts(title: $title) {
-                title
-                description
-                id
-            }
-        }
-    `;
-    const variables = { "title": "" }
-    const res = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            query,
-            variables,
-        }),
-    })
-
-    const json = await res.json()
-
+    const products = await readProducts('')
     return {
-        props: {
-            products: json.data.readProducts
-        }
+        props: { products }
     }
 }
