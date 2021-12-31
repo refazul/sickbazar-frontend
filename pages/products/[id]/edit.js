@@ -3,19 +3,18 @@ import FormHeader from '../../../components/bonik/formheader';
 import { updateProduct, readProduct, fields } from '../../../services/product';
 
 export default function ProductEdit({ product }) {
-    const submitProduct = async event => {
-        event.preventDefault()
-        const productId = event.target.id.value;
+    const submitProduct = (id, data) => {
+        const productId = id;
         const input = {
-            "title": event.target.title.value,
-            "description": event.target.description.value
+            "title": data.title,
+            "description": data.description
         }
-        const result = await updateProduct(productId, input);
+        const result = updateProduct(productId, input);
     }
     return (
         <div>
             <FormHeader title="Edit Product" button="Back to Product List"></FormHeader>
-            <Form fields={fields} values={product} id={product.id} onSubmit={submitProduct}></Form>
+            <Form fields={fields} defaultValues={product} onSubmitCallback={submitProduct}></Form>
         </div>
     )
 }
