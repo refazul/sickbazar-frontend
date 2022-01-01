@@ -25,7 +25,7 @@ function NavLeft({ items }) {
                 {
                     items.map((item) => {
                         return (
-                            <div key={item.title} className={navstyles.nav_left_wrapper_inner}>
+                            <div key={(Math.random() + 1).toString(36).substring(7)} className={navstyles.nav_left_wrapper_inner}>
                                 <div className={navstyles.nav_left_item_wrapper}>
                                     <span className={navstyles.nav_left_item}>{item.title}</span>
                                 </div>
@@ -54,12 +54,12 @@ function NavLeftMega({ children }) {
                             {
                                 children.map((item) => {
                                     return (
-                                        <div className={navstyles.nav_left_mega_wrapper_inner}>
+                                        <div key={(Math.random() + 1).toString(36).substring(7)} className={navstyles.nav_left_mega_wrapper_inner}>
                                             <a className={navstyles.nav_left_mega_item}>{item.title}</a>
                                             {
                                                 item.children.map((children) => {
                                                     return (
-                                                        <a className={`${navstyles.nav_left_mega_item} ${navstyles.nav_left_mega_item_child}`}>{children.title}</a>
+                                                        <a key={(Math.random() + 1).toString(36).substring(7)} className={`${navstyles.nav_left_mega_item} ${navstyles.nav_left_mega_item_child}`}>{children.title}</a>
                                                     )
                                                 })
                                             }
@@ -93,7 +93,7 @@ function NavTop({ items }) {
             {
                 items.map((item) => {
                     return (
-                        <div className={navstyles.nav_top_wrapper_inner}>
+                        <div key={(Math.random() + 1).toString(36).substring(7)} className={navstyles.nav_top_wrapper_inner}>
                             <span className={navstyles.nav_top_item}>{item.title}</span>
                             {
                                 item.children && item.children.length > 0 ? <NavTopRegular {...item} root={true}></NavTopRegular> : <div></div>
@@ -112,7 +112,7 @@ function NavLeftRegular({ children }) {
                 {
                     children.map((item) => {
                         return (
-                            <div className={navstyles.nav_left_wrapper_inner}>
+                            <div key={(Math.random() + 1).toString(36).substring(7)} className={navstyles.nav_left_wrapper_inner}>
                                 <div className={navstyles.nav_left_item_wrapper}>
                                     <span className={navstyles.nav_left_item}>{item.title}</span>
                                 </div>
@@ -135,7 +135,7 @@ function NavTopRegular({ children, root }) {
                 {
                     children.map((item) => {
                         return (
-                            <div className={navstyles.nav_top_wrapper_inner}>
+                            <div key={(Math.random() + 1).toString(36).substring(7)} className={navstyles.nav_top_wrapper_inner}>
                                 <div className={navstyles.nav_top_item_wrapper}>
                                     <span className={navstyles.nav_top_item}>{item.title}</span>
                                 </div>

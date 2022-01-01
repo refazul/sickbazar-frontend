@@ -7,7 +7,7 @@ export default function ProductList({ products }) {
             {
                 products.map((product) => {
                     return (
-                        <div>
+                        <div key={(Math.random() + 1).toString(36).substring(7)}>
                             <div onClick={() => { router.push('/products/' + product.id) }}>
                                 <div>{product.title}</div>
                                 <div>{product.description}</div>

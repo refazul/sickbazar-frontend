@@ -20,7 +20,7 @@ export default function Form({ fields, defaultValues, onSubmitCallback }) {
                     {
                         fields.map((field) => {
                             return (
-                                <div className={formstyles.form_field_wrapper}>
+                                <div key={(Math.random() + 1).toString(36).substring(7)} className={formstyles.form_field_wrapper}>
                                     <div className={formstyles.form_item_wrapper}>
                                         <label className={formstyles.form_label}>{field.title}</label>
                                         <div className={formstyles.form_input_wrapper}>
