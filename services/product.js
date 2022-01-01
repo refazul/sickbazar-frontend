@@ -1,5 +1,12 @@
 import { http_post } from "./helper";
 
+const removeProductQuery = `
+mutation Mutation($productId: ID!) {
+    deleteProduct(productID: $productId) {
+        success
+    }
+}  
+`
 const updateProductQuery = `
 mutation Mutation($productId: ID!, $input: ProductInput) {
     updateProduct(productID: $productId, input: $input) {
@@ -32,7 +39,14 @@ mutation CreateProduct($input: ProductInput) {
     }
 }
 `
-
+export async function removeProduct(productId) {
+    const variables = {
+        "productId": productId
+    }
+    const res = await http_post({ query: removeProductQuery, variables })
+    const result = await res.json()
+    return result;
+}
 export async function updateProduct(productId, input) {
     const variables = {
         "productId": productId,

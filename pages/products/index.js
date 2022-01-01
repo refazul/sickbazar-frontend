@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import { readProducts } from '../../services/product';
+import { readProducts, removeProduct } from '../../services/product';
 export default function ProductList({ products }) {
     const router = useRouter();
     return (
@@ -12,7 +12,8 @@ export default function ProductList({ products }) {
                                 <div>{product.title}</div>
                                 <div>{product.description}</div>
                             </div>
-                            <div onClick={() => { router.push('/products/' + product.id + '/edit') }}>Edit</div>
+                            <button onClick={() => { router.push('/products/' + product.id + '/edit') }}>Edit</button>
+                            <button onClick={() => { removeProduct(product.id) }}>Delete</button>
                         </div>
                     )
                 })
