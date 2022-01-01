@@ -24,7 +24,7 @@ export default function Form({ fields, defaultValues, onSubmitCallback }) {
                                     <div className={formstyles.form_item_wrapper}>
                                         <label className={formstyles.form_label}>{field.title}</label>
                                         <div className={formstyles.form_input_wrapper}>
-                                            <input {...register(field.name)} placeholder={field.title} className={formstyles.form_input} />
+                                            <input {...register(field.name)} type={field.type} placeholder={field.title} className={formstyles.form_input} />
                                         </div>
                                         {errors[field.name] && <small className={formstyles.form_sub}>{field.title} is Required</small>}
                                     </div>

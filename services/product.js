@@ -82,6 +82,7 @@ export async function createProduct(input) {
 }
 
 export const fields = [
-    { "title": "Title", "name": "title" },
-    { "title": "Description", "name": "description" },
+    { "title": "Title", "name": "title", "type": "text" },
+    { "title": "Description", "name": "description", "type": "text" },
+    { "title": "Image", "name": "image", "type": "file" },
 ]
