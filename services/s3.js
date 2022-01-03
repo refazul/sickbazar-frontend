@@ -14,7 +14,8 @@ async function s3_upload(file, key) {
             const params = {
                 Bucket: 'sickbazar', // pass your bucket name
                 Key: key ? key : file, // file will be saved as testBucket/contacts.csv
-                Body: JSON.stringify(data, null, 2)
+                Body: JSON.stringify(data, null, 2),
+                ACL: 'public-read',
             };
             s3.upload(params, function (s3Err, data) {
                 if (s3Err) throw s3Err
