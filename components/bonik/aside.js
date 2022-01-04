@@ -7,7 +7,8 @@ const items = [
     { "title": "Dashboard", "link": "/dashboard" },
     { "title": "Products", "link": "/products" },
     { "title": "Add New Product", "link": "/products/new" },
-    { "title": "Orders", "link": "/orders" },
+    { "title": "Groups", "link": "/groups" },
+    { "title": "Add New Group", "link": "/groups/new" },
     { "title": "Account Settings", "link": "/settings" },
 ]
 
