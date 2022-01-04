@@ -94,10 +94,12 @@ function NavTop({ items }) {
                 items.map((item) => {
                     return (
                         <div key={(Math.random() + 1).toString(36).substring(7)} className={navstyles.nav_top_wrapper_inner}>
-                            <span className={navstyles.nav_top_item}>{item.title}</span>
-                            {
-                                item.children && item.children.length > 0 ? <NavTopRegular {...item} root={true}></NavTopRegular> : <div></div>
-                            }
+                            <div className={navstyles.nav_top_item_wrapper}>
+                                <span className={navstyles.nav_top_item}>{item.title}</span>
+                                {
+                                    item.children && item.children.length > 0 ? <NavTopRegular {...item} root={true}></NavTopRegular> : <div></div>
+                                }
+                            </div>
                         </div>
                     )
                 })
@@ -138,10 +140,10 @@ function NavTopRegular({ children, root }) {
                             <div key={(Math.random() + 1).toString(36).substring(7)} className={navstyles.nav_top_wrapper_inner}>
                                 <div className={navstyles.nav_top_item_wrapper}>
                                     <span className={navstyles.nav_top_item}>{item.title}</span>
+                                    {
+                                        item.children && item.children.length > 0 ? <NavTopRegular {...item}></NavTopRegular> : <div></div>
+                                    }
                                 </div>
-                                {
-                                    item.children && item.children.length > 0 ? <NavTopRegular {...item}></NavTopRegular> : <div></div>
-                                }
                             </div>
                         )
                     })

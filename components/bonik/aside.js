@@ -1,5 +1,5 @@
 import React from 'react'
-import {useRouter} from 'next/router';
+import { useRouter } from 'next/router';
 
 import asidestyles from './aside.module.css';
 
@@ -20,12 +20,14 @@ export default function Aside() {
                     items.map((item) => {
                         const active = router.pathname === item.link;
                         return (
-                            <a key={item.link} className={`${asidestyles.aside_item_wrapper} ${active ? asidestyles.aside_item_wrapper_active : ''}`}>
-                                <div className={asidestyles.aside_item_wrapper_inner} onClick={() => router.push(item.link)}>
-                                    <div className='icon'></div>
-                                    <span className={asidestyles.aside_item}>{item.title}</span>
-                                </div>
-                            </a>
+                            <div key={item.link} className={`${asidestyles.aside_item_wrapper_outer} ${active ? asidestyles.aside_item_wrapper_active : ''}`} onClick={() => router.push(item.link)}>
+                                <a className={`${asidestyles.aside_item_wrapper}`}>
+                                    <div className={asidestyles.aside_item_wrapper_inner}>
+                                        <div className='icon'></div>
+                                        <span className={asidestyles.aside_item}>{item.title}</span>
+                                    </div>
+                                </a>
+                            </div>
                         )
                     })
                 }
