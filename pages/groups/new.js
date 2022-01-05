@@ -1,4 +1,4 @@
-import Form from '../../components/bonik/form';
+import { Form, Input } from '../../components/bonik/form';
 import FormHeader from '../../components/bonik/formheader';
 import { createGroup, fields } from '../../services/group';
 import { s3_upload } from '../../services/s3client';
@@ -17,7 +17,12 @@ export default function GroupNew() {
     return (
         <div>
             <FormHeader title="New Group" button="Back to Group List"></FormHeader>
-            <Form fields={fields} onSubmitCallback={submitGroup}></Form>
+            <Form onSubmitCallback={submitGroup}>
+                <Input name="title" placeholder="Title" />
+                <Input name="description" placeholder="Description" />
+                <Input name="image" type="file"/>
+                <button type="submit">Submit</button>
+            </Form>
         </div>
     )
 }

@@ -1,6 +1,6 @@
-import Form from '../../../components/bonik/form';
+import { Form, Input } from '../../../components/bonik/form';
 import FormHeader from '../../../components/bonik/formheader';
-import { updateProduct, readProduct, fields } from '../../../services/product';
+import { updateProduct, readProduct } from '../../../services/product';
 import { s3_upload } from '../../../services/s3client';
 
 export default function ProductEdit({ product }) {
@@ -20,7 +20,12 @@ export default function ProductEdit({ product }) {
     return (
         <div>
             <FormHeader title="Edit Product" button="Back to Product List"></FormHeader>
-            <Form fields={fields} defaultValues={product} onSubmitCallback={submitProduct}></Form>
+            <Form onSubmitCallback={submitProduct} defaultValues={product}>
+                <Input name="title" placeholder="Title" />
+                <Input name="description" placeholder="Description" />
+                <Input name="image" type="file"/>
+                <button type="submit">Submit</button>
+            </Form>
         </div>
     )
 }

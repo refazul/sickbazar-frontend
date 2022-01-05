@@ -1,4 +1,4 @@
-import Form from '../../components/bonik/form';
+import { Form, Input } from '../../components/bonik/form';
 import FormHeader from '../../components/bonik/formheader';
 import { createProduct, fields } from '../../services/product';
 import { s3_upload } from '../../services/s3client';
@@ -17,7 +17,12 @@ export default function ProductNew() {
     return (
         <div>
             <FormHeader title="New Product" button="Back to Product List"></FormHeader>
-            <Form fields={fields} onSubmitCallback={submitProduct}></Form>
+            <Form onSubmitCallback={submitProduct}>
+                <Input name="title" placeholder="Title" />
+                <Input name="description" placeholder="Description" />
+                <Input name="image" type="file"/>
+                <button type="submit">Submit</button>
+            </Form>
         </div>
     )
 }
