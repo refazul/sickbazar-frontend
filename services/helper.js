@@ -23,3 +23,22 @@ export function random_string(length = 5) {
     }
     return result;
 }
+
+export function singularize(string = '') {
+    const endings = {
+        ves: 'fe',
+        ies: 'y',
+        i: 'us',
+        zes: '',
+        ses: '',
+        es: '',
+        s: ''
+    };
+    return string.replace(
+        new RegExp(`(${Object.keys(endings).join('|')})$`),
+        r => endings[r]
+    );
+}
+export function capitalize(string = '') {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}

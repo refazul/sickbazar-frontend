@@ -1,5 +1,6 @@
 import React from "react";
 import formstyles from './form.module.css';
+import globalstyles from './global.module.css';
 import { useForm } from 'react-hook-form';
 
 export function Form({ defaultValues, children, onSubmitCallback, title, button }) {
@@ -12,12 +13,12 @@ export function Form({ defaultValues, children, onSubmitCallback, title, button 
 
     return (
         <div>
-            <div className={formstyles.formheader_head_container}>
-                <div className={formstyles.formheader_head_wrapper}>
-                    <div className={formstyles.formheader_title_wrapper}>
-                        <h2 className={formstyles.formheader_title}>{title}</h2>
+            <div className={globalstyles.formheader_head_container}>
+                <div className={globalstyles.formheader_head_wrapper}>
+                    <div className={globalstyles.formheader_title_wrapper}>
+                        <h2 className={globalstyles.formheader_title}>{title}</h2>
                     </div>
-                    <button className={`${formstyles.formheader_button} red`}>{button}</button>
+                    <button className={`${globalstyles.formheader_button} red`}>{button}</button>
                 </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)}>

@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router';
 import { readProducts, removeProduct } from '../../services/product';
 import { readGroups, removeGroup } from '../../services/group';
+import { readCategories, removeCategory } from '../../services/category';
+import { singularize, capitalize } from '../../services/helper';
+import globalstyles from '../../components/bonik/global.module.css';
 
 export default function EntityList({ entity, objects }) {
     const router = useRouter();
@@ -9,10 +12,19 @@ export default function EntityList({ entity, objects }) {
             removeProduct(object.id)
          } else if (entity == 'groups') {
             removeGroup(object.id);
+         } else if (entity == 'categories') {
+            removeCategory(object.id);
          }
     }
     return (
         <div>
+            <div className={globalstyles.formheader_head_container}>
+                <div className={globalstyles.formheader_head_wrapper}>
+                    <div className={globalstyles.formheader_title_wrapper}>
+                        <h2 className={globalstyles.formheader_title}>{ capitalize(singularize(entity)) + " List" }</h2>
+                    </div>
+                </div>
+            </div>
             {
                 objects.map((object) => {
                     return (
@@ -39,6 +51,8 @@ export async function getServerSideProps(context) {
         props.objects = await readProducts('');
     } else if (entity == 'groups') {
         props.objects = await readGroups('');
+    } else if (entity == 'categories') {
+        props.objects = await readCategories('');
     }
     return {
         props

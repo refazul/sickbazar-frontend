@@ -1,7 +1,8 @@
 import { readProduct } from '../../services/product';
 import { readGroup } from '../../services/group';
+import { readCategory } from '../../services/category';
 
-export default function EntityDetail({ object }) {
+export default function EntityDetail({ entity, object }) {
     return (
         <div>
             <div>{object.id}</div>
@@ -19,6 +20,8 @@ export async function getServerSideProps(context) {
         props.object = await readProduct(id);
     } else if (entity == 'groups') {
         props.object = await readGroup(id);
+    } else if (entity == 'categories') {
+        props.object = await readCategory(id);
     }
     return {
         props

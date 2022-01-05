@@ -9,6 +9,8 @@ const items = [
     { "title": "Add New Product", "link": "/products/new" },
     { "title": "Groups", "link": "/groups" },
     { "title": "Add New Group", "link": "/groups/new" },
+    { "title": "Categories", "link": "/categories" },
+    { "title": "Add New Category", "link": "/categories/new" },
     { "title": "Account Settings", "link": "/settings" },
 ]
 
