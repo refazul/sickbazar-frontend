@@ -1,15 +1,10 @@
 const AWS = require('aws-sdk');
 
-function s3_upload(file) {
-    return new Promise((resolve, reject) => {
-        fetch('/api/s3sign').then((val) => {
-            val.json().then((signed) => {
-                fetch(signed.uploadURL, { method: "PUT", body: file }).then((res) => {
-                    resolve(res.url.split('?')[0]);
-                });
-            });
-        });
-    });
+export async function s3_upload(file) {
+    const val = await fetch('/api/s3sign')
+    const signed = await val.json()
+    const res = await fetch(signed.uploadURL, { method: "PUT", body: file })
+    return res.url.split('?')[0];
     
     /*
     return new Promise((resolve, reject) => {
@@ -36,4 +31,3 @@ function s3_upload(file) {
     });
     */
 };
-module.exports = { s3_upload }

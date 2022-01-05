@@ -4,21 +4,18 @@ import { updateGroup, readGroup, fields } from '../../../services/group';
 import { s3_upload } from '../../../services/s3client';
 
 export default function GroupEdit({ group }) {
-    const submitGroup = (id, data) => {
+    const submitGroup = async (id, data) => {
         const groupId = id;
         const input = {
             "title": data.title,
             "description": data.description
         }
-        const file = data.image[0];
         if (data.image && data.image.length > 0) {
-            s3_upload(file).then((url) => {
-                input.image = url;
-                const result = updateGroup(groupId, input);
-            })
-        } else {
-            const result = updateGroup(groupId, input);
+            const file = data.image[0];
+            const url = await s3_upload(file);
+            input.image = url;
         }
+        const result = updateGroup(groupId, input);
     }
     return (
         <div>

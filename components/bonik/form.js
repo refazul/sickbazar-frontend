@@ -10,7 +10,7 @@ export default function Form({ fields, defaultValues, onSubmitCallback }) {
     const { register, handleSubmit, reset, formState } = useForm(formOptions);
     const { errors } = formState;
 
-    function onSubmit(data) {
+    async function onSubmit(data) {
         return defaultValues && defaultValues.id ? onSubmitCallback(defaultValues.id, data): onSubmitCallback(data);
     }
     return (

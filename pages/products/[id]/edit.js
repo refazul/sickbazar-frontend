@@ -1,9 +1,10 @@
 import Form from '../../../components/bonik/form';
 import FormHeader from '../../../components/bonik/formheader';
 import { updateProduct, readProduct, fields } from '../../../services/product';
+import { s3_upload } from '../../../services/s3client';
 
 export default function ProductEdit({ product }) {
-    const submitProduct = (id, data) => {
+    const submitProduct = async (id, data) => {
         const productId = id;
         const input = {
             "title": data.title,
@@ -11,13 +12,10 @@ export default function ProductEdit({ product }) {
         }
         if (data.image && data.image.length > 0) {
             const file = data.image[0];
-            s3_upload(file).then((url) => {
-                input.image = url;
-                const result = updateProduct(productId, input);
-            });
-        } else {
-            const result = updateProduct(productId, input);
+            const url = await s3_upload(file);
+            input.image = url;
         }
+        const result = updateProduct(productId, input);
     }
     return (
         <div>
