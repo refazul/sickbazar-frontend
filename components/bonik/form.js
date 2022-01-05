@@ -49,9 +49,9 @@ export function Input({ register, name, title, errors, ...rest }) {
 export function Select({ register, options, name, ...rest }) {
     return (
         <select {...register(name)} {...rest}>
-            {options.map(value => (
-                <option key={value} value={value}>
-                    {value}
+            {options.map(data => (
+                <option key={data.value} value={data.value}>
+                    {data.title}
                 </option>
             ))}
         </select>

@@ -4,23 +4,15 @@ import { updateGroup, readGroup } from '../../../services/group';
 import { s3_upload } from '../../../services/s3client';
 
 export default function GroupEdit({ group }) {
-    const submitGroup = async (id, data) => {
-        const groupId = id;
-        const input = {
-            "title": data.title,
-            "description": data.description
-        }
-        if (data.image && data.image.length > 0) {
-            const file = data.image[0];
-            const url = await s3_upload(file);
-            input.image = url;
-        }
-        const result = updateGroup(groupId, input);
+    const onSubmit = async (id, data) => {
+        const { title, description } = data
+        const image = data.image && data.image.length > 0 ? await s3_upload(data.image[0]) : group.image;
+        const result = updateGroup(id, { title, description, image });
     }
     return (
         <div>
             <FormHeader title="Edit Group" button="Back to Group List"></FormHeader>
-            <Form onSubmitCallback={submitGroup} defaultValues={group}>
+            <Form onSubmitCallback={onSubmit} defaultValues={group}>
                 <Input name="title" placeholder="Title" />
                 <Input name="description" placeholder="Description" />
                 <Input name="image" type="file"/>
