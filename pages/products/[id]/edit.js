@@ -11,17 +11,10 @@ export default function ProductEdit({ product }) {
         }
         if (data.image && data.image.length > 0) {
             const file = data.image[0];
-            fetch('/api/s3sign').then((val) => {
-                val.json().then((signed) => {
-                    console.log(signed);
-                    fetch(signed.uploadURL, { method: "PUT", body: file }).then((res) => {
-                        console.log(res);
-                        input.image = res.url.split('?')[0];
-                        console.log(input);
-                        const result = updateProduct(productId, input);
-                    });
-                })
-            })
+            s3_upload(file).then((url) => {
+                input.image = url;
+                const result = updateProduct(productId, input);
+            });
         } else {
             const result = updateProduct(productId, input);
         }

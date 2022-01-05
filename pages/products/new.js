@@ -10,17 +10,10 @@ export default function ProductNew() {
             "description": data.description
         }
         const file = data.image[0];
-        fetch('/api/s3sign').then((val) => {
-            val.json().then((signed) => {
-                console.log(signed);
-                fetch(signed.uploadURL, { method: "PUT", body: file }).then((res) => {
-                    console.log(res);
-                    input.image = res.url.split('?')[0];
-                    console.log(input);
-                    const result = createProduct(input)
-                });
-            })
-        })
+        s3_upload(file).then((url) => {
+            input.image = url;
+            const result = createProduct(input);
+        });
     }
     return (
         <div>
