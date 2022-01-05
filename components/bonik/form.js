@@ -2,7 +2,7 @@ import React from "react";
 import formstyles from './form.module.css';
 import { useForm } from 'react-hook-form';
 
-export function Form({ defaultValues, children, onSubmitCallback }) {
+export function Form({ defaultValues, children, onSubmitCallback, title, button }) {
     const methods = useForm({ defaultValues });
     const { handleSubmit, formState } = methods;
 
@@ -11,24 +11,34 @@ export function Form({ defaultValues, children, onSubmitCallback }) {
     }
 
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <div className={formstyles.form_content_wrapper}>
-                {
-                    React.Children.map(children, child => {
-                        return child.props.name
-                            ? React.createElement(child.type, {
-                                ...{
-                                    ...child.props,
-                                    register: methods.register,
-                                    errors: formState.errors,
-                                    key: child.props.name
-                                }
-                            })
-                            : child;
-                    })
-                }
+        <div>
+            <div className={formstyles.formheader_head_container}>
+                <div className={formstyles.formheader_head_wrapper}>
+                    <div className={formstyles.formheader_title_wrapper}>
+                        <h2 className={formstyles.formheader_title}>{title}</h2>
+                    </div>
+                    <button className={`${formstyles.formheader_button} red`}>{button}</button>
+                </div>
             </div>
-        </form>
+            <form onSubmit={handleSubmit(onSubmit)}>
+                <div className={formstyles.form_content_wrapper}>
+                    {
+                        React.Children.map(children, child => {
+                            return child.props.name
+                                ? React.createElement(child.type, {
+                                    ...{
+                                        ...child.props,
+                                        register: methods.register,
+                                        errors: formState.errors,
+                                        key: child.props.name
+                                    }
+                                })
+                                : child;
+                        })
+                    }
+                </div>
+            </form>
+        </div>
     );
 }
 
