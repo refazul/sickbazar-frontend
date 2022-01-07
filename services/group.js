@@ -19,6 +19,7 @@ query ReadGroup($groupId: ID!) {
     readGroup(groupID: $groupId) {
         title
         description
+        image
         id
     }
 }
@@ -28,6 +29,7 @@ query Query($title: String!) {
     readGroups(title: $title) {
         title
         description
+        image
         id
     }
 }

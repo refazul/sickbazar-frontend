@@ -19,6 +19,7 @@ query ReadProduct($productId: ID!) {
     readProduct(productID: $productId) {
         title
         description
+        image
         id
     }
 }
@@ -28,6 +29,7 @@ query Query($title: String!) {
     readProducts(title: $title) {
         title
         description
+        image
         id
     }
 }

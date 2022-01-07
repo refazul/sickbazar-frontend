@@ -19,6 +19,7 @@ query ReadCategory($categoryId: ID!) {
     readCategory(categoryID: $categoryId) {
         title
         description
+        image
         id
     }
 }
@@ -28,6 +29,7 @@ query Query($title: String!) {
     readCategories(title: $title) {
         title
         description
+        image
         id
     }
 }
