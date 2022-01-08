@@ -16,7 +16,7 @@ mutation Mutation($productId: ID!, $input: ProductInput) {
 `
 const readProductQuery = `
 query ReadProduct($productId: ID!) {
-    readProduct(productID: $productId) {
+    readProduct(entityID: $productId) {
         title
         description
         image
