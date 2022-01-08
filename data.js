@@ -1,22 +1,22 @@
 export const vendors = [
-    { "title": "Newegg", "id": "negg" },
-    { "title": "Platinum Micro", "id": "pmicro" },
+    { "title": "Newegg" },
+    { "title": "Platinum Micro" },
 ]
 
 export const attributes = [
     {
         "title": "Color",
-        "id": "color",
+        "keyname": "color",
         "type": "color",
         "group": "textile",
         "options": [
-            { "title": "White", "value": "white", "code": "#ff" },
-            { "title": "Black", "value": "black", "code": "#000" }
+            { "title": "White", "value": "white", "color": "#ff", "image": "" },
+            { "title": "Black", "value": "black", "color": "#000", "image": "" }
         ],
     },
     {
         "title": "Size",
-        "id": "size",
+        "keyname": "size",
         "type": "text",
         "group": "textile",
         "options": [
@@ -52,71 +52,35 @@ export const attributes = [
 
 export const products = [{
     "title": "T Shirt",
-    "description": "v neck",
+    "description": "V neck",
     "group": "textile",
-    "type": "simple",
-    "stocks": [
+    "price": [
         {
-            "vendors": [
-                { "vendor": "newegg", "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "vendor": "aaawave", "price": 35, "quantity": 5, "sku": "dfahrtgyrt34", "image": "", "unit": "lot" },
+            "stocks": [
+                { "vendorID": "newegg", "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
+                { "vendorID": "aaawave", "price": 35, "quantity": 5, "sku": "dfahrtgyrt34", "image": "", "unit": "lot" },
             ]
         }
     ],
 },
 {
-    "title": "T Shirt",
-    "description": "v neck",
+    "title": "Blazer",
+    "description": "O neck",
     "group": "textile",
-    "type": "variable",
-    "stocks": [
+    "attributes": ["attributeID1", "attributeID2"],
+    "price": [
         {
-            "color": "white", "size": "xxs",
-            "vendors": [
-                { "vendor": "newegg", "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "vendor": "aaawave", "price": 35, "quantity": 5, "sku": "dfahrtgyrt34", "image": "", "unit": "lot" },
+            "selector": { "color": "white", "size": "xs" },
+            "stocks": [
+                { "vendorID": "newegg", "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
+                { "vendorID": "aaawave", "price": 35, "quantity": 5, "sku": "dfahrtgyrt34", "image": "", "unit": "lot" },
             ]
         },
         {
-            "color": "white", "size": "xs", "vendors": [
-                { "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "price": 30, "quantity": 10, "sku": "dfahrtgyrt34", "image": "" },
-            ]
-        },
-        {
-            "color": "white", "size": "s", "vendors": [
-                { "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "price": 30, "quantity": 10, "sku": "dfahrtgyrt34", "image": "" },
-            ]
-        },
-        {
-            "color": "white", "size": "m", "vendors": [
-                { "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "price": 30, "quantity": 10, "sku": "dfahrtgyrt34", "image": "" },
-            ]
-        },
-        {
-            "color": "white", "size": "l", "vendors": [
-                { "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "price": 30, "quantity": 10, "sku": "dfahrtgyrt34", "image": "" },
-            ]
-        },
-        {
-            "color": "white", "size": "xl", "vendors": [
-                { "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "price": 30, "quantity": 10, "sku": "dfahrtgyrt34", "image": "" },
-            ]
-        },
-        {
-            "color": "white", "size": "2xl", "vendors": [
-                { "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "price": 30, "quantity": 10, "sku": "dfahrtgyrt34", "image": "" },
-            ]
-        },
-        {
-            "color": "white", "size": "3xl", "vendors": [
-                { "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
-                { "price": 30, "quantity": 10, "sku": "dfahrtgyrt34", "image": "" },
+            "selector": { "color": "black", "size": "xl" },
+            "stocks": [
+                { "vendorID": "newegg", "price": 30, "quantity": 10, "sku": "ergtgvdg", "image": "", "unit": "pc", },
+                { "vendorID": "aaawave", "price": 30, "quantity": 10, "sku": "cvdfdf", "image": "" },
             ]
         },
     ]

@@ -40,6 +40,12 @@ export async function getServerSideProps(context) {
     if (entity == 'products') {
         props.groups = await readGroups('');
         props.categories = await readCategories('');
+        /**
+         * attributes = readAttributes('')
+         * "Add Option" CLICK => 1 Single DropDown(attribute keynames) & 1 Multi Dropdown(of the attribute values)
+         * Pick one from left => Multi DropDown update
+         * Pick one from the right => Cross Product variant UI below
+         */
     }
     return {
         props
