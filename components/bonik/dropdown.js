@@ -6,15 +6,16 @@ export function Dropdown({ options }) {
 
 	const [choices, setChoices] = useState(options);
 	const [visible, setVisible] = useState(false);
+	const [filter, setFilter] = useState('');
 	return (
 		<div>
-			<div className="w-full md:w-1/2 flex flex-col items-center h-64 mx-auto">
+			<div className="w-full flex flex-col items-center h-64 mx-auto">
 				<input name="values" type="hidden" value={choices.filter(o => o.selected).map(o => o.value)} />
-				<div className="inline-block relative w-64">
+				<div className="inline-block relative">
 					<div className="flex flex-col items-center relative">
 						<div className="w-full">
 							<div className="my-2 p-1 flex border border-gray-200 bg-white rounded">
-								<div className="flex flex-auto flex-wrap" onClick={() => { toggle() }}>
+								<div className="flex flex-auto flex-wrap" onClick={toggle}>
 									{
 										choices.filter(o => o.selected).map((choice, index) => {
 											return (
@@ -23,6 +24,7 @@ export function Dropdown({ options }) {
 										})
 									}
 								</div>
+								<input type="text" value={filter} onChange={handleFilterChange} onClick={toggle}/>
 								<DropdownButton collapsed={isOpen()} toggleCallback={toggle}></DropdownButton>
 							</div>
 						</div>
@@ -30,7 +32,15 @@ export function Dropdown({ options }) {
 							<div className={(isOpen() ? "" : " hidden ") + "absolute shadow top-100 bg-white z-40 w-full left-0 rounded max-h-select"}>
 								<div className="flex flex-col w-full overflow-y-auto h-64">
 									{
-										choices.map((choice, index) => {
+										choices.filter(o => {
+											if (filter == '') {
+												return true;
+											}
+											if (o.title.toLowerCase().indexOf(filter) > -1) {
+												return true;
+											}
+											return false;
+										}).map((choice, index) => {
 											return (
 												<DropdownItem key={index} choice={choice} index={index} onClickCallback={select}></DropdownItem>
 											)
@@ -44,6 +54,10 @@ export function Dropdown({ options }) {
 			</div >
 		</div >
 	)
+	function handleFilterChange(e) {
+		const newFilter = e.target.value;
+		setFilter(newFilter);
+	}
 	function select(choice) {
 		const new_choices = choices.map((o) => {
 			if (o.value == choice.value) {
