@@ -12,7 +12,7 @@ const options = [
 export default function Dashboard() {
     return (
         <div>
-            <Dropdown opts={options}></Dropdown>
+            <Dropdown options={options}></Dropdown>
         </div>
     )
 }
