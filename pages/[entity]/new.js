@@ -1,4 +1,4 @@
-import { Form, Input, Select } from '../../components/bonik/form';
+import { Form, Input, Dropdown, Select } from '../../components/bonik/form';
 import { createProduct } from '../../services/product';
 import { createGroup, readGroups } from '../../services/group';
 import { createCategory, readCategories } from '../../services/category';
@@ -25,7 +25,7 @@ export default function EntityNew({ entity, ...rest }) {
                 <Input name="description" placeholder="Description" />
                 <Input name="image" type="file" />
                 {
-                    entity == 'products' ? <Select name="groupID" options={rest.groups.map(g => { return { title: g.title, value: g.id } })} /> : <div></div>
+                    entity == 'products' ? <Dropdown name="groupID" options={rest.groups.map(g => { return { title: g.title, value: g.id } })} /> : <div></div>
                 }
                 <button type="submit">Submit</button>
             </Form>

@@ -31,7 +31,8 @@ export function Form({ defaultValues, children, onSubmitCallback, title, button 
                                         ...child.props,
                                         register: methods.register,
                                         errors: formState.errors,
-                                        key: child.props.name
+                                        key: child.props.name,
+                                        setValue: methods.setValue
                                     }
                                 })
                                 : child;
@@ -43,7 +44,7 @@ export function Form({ defaultValues, children, onSubmitCallback, title, button 
     );
 }
 
-export function Input({ register, name, title, errors, ...rest }) {
+export function Input({ register, name, title, errors, setValue, ...rest }) {
     return (
         <div className={formstyles.form_field_wrapper}>
             <div className={formstyles.form_item_wrapper}>
@@ -57,7 +58,7 @@ export function Input({ register, name, title, errors, ...rest }) {
     )
 }
 
-export function Select({ register, options, name, ...rest }) {
+export function Select({ register, options, name, setValue, ...rest }) {
     return (
         <select {...register(name)} {...rest}>
             {options.map(data => (
@@ -69,7 +70,7 @@ export function Select({ register, options, name, ...rest }) {
     );
 }
 
-export function Dropdown({ register, name, options }) {
+export function Dropdown({ register, name, options, setValue, ...rest }) {
     function isOpen() { return visible }
     function toggle() { setVisible(!visible) }
 
@@ -79,7 +80,7 @@ export function Dropdown({ register, name, options }) {
     return (
         <div>
             <div className="w-full flex flex-col items-center h-64 mx-auto">
-                <input {...register(name)} type="hidden" value={choices.filter(o => o.selected).map(o => o.value)} />
+                <input {...register(name)} type="hidden" />
                 <div className="inline-block relative">
                     <div className="flex flex-col items-center relative">
                         <div className="w-full">
@@ -135,6 +136,7 @@ export function Dropdown({ register, name, options }) {
             }
             return o;
         })
+        setValue("groupID", new_choices.filter(o => o.selected).map(o => o.value).join(','));
         setChoices(new_choices);
     }
     function remove(choice) {
@@ -144,6 +146,7 @@ export function Dropdown({ register, name, options }) {
             }
             return o;
         })
+        setValue("groupID", new_choices.filter(o => o.selected).map(o => o.value).join(','));
         setChoices(new_choices);
     }
 }
