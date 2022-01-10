@@ -1,22 +1,22 @@
 import { http_post } from "./helper";
 
 const removeProductQuery = `
-mutation Mutation($productId: ID!) {
-    deleteProduct(productID: $productId) {
+mutation Mutation($entityID: ID!) {
+    deleteProduct(entityID: $entityID) {
         success
     }
 }  
 `
 const updateProductQuery = `
-mutation Mutation($productId: ID!, $input: ProductInput) {
-    updateProduct(productID: $productId, input: $input) {
+mutation Mutation($entityID: ID!, $input: ProductInput) {
+    updateProduct(entityID: $entityID, input: $input) {
         success
     }
 }
 `
 const readProductQuery = `
-query ReadProduct($productId: ID!) {
-    readProduct(entityID: $productId) {
+query ReadProduct($entityID: ID!) {
+    readProduct(entityID: $entityID) {
         title
         description
         image
@@ -41,26 +41,26 @@ mutation CreateProduct($input: ProductInput) {
     }
 }
 `
-export async function removeProduct(productId) {
+export async function removeProduct(entityID) {
     const variables = {
-        "productId": productId
+        "entityID": entityID
     }
     const res = await http_post({ query: removeProductQuery, variables })
     const result = await res.json()
     return result;
 }
-export async function updateProduct(productId, input) {
+export async function updateProduct(entityID, input) {
     const variables = {
-        "productId": productId,
+        "entityID": entityID,
         "input": input
     }
     const res = await http_post({ query: updateProductQuery, variables })
     const result = await res.json()
     return result;
 }
-export async function readProduct(productId) {
+export async function readProduct(entityID) {
     const variables = {
-        "productId": productId
+        "entityID": entityID
     }
     const res = await http_post({ query: readProductQuery, variables })
     const result = await res.json()
@@ -82,9 +82,3 @@ export async function createProduct(input) {
     const result = await res.json()
     return result;
 }
-
-export const fields = [
-    { "title": "Title", "name": "title", "type": "text" },
-    { "title": "Description", "name": "description", "type": "text" },
-    { "title": "Image", "name": "image", "type": "file" },
-]

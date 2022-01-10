@@ -1,22 +1,22 @@
 import { http_post } from "./helper";
 
 const removeGroupQuery = `
-mutation Mutation($groupId: ID!) {
-    deleteGroup(groupID: $groupId) {
+mutation Mutation($entityID: ID!) {
+    deleteGroup(entityID: $entityID) {
         success
     }
 }  
 `
 const updateGroupQuery = `
-mutation Mutation($groupId: ID!, $input: GroupInput) {
-    updateGroup(groupID: $groupId, input: $input) {
+mutation Mutation($entityID: ID!, $input: GroupInput) {
+    updateGroup(entityID: $entityID, input: $input) {
         success
     }
 }
 `
 const readGroupQuery = `
-query ReadGroup($groupId: ID!) {
-    readGroup(groupID: $groupId) {
+query ReadGroup($entityID: ID!) {
+    readGroup(entityID: $entityID) {
         title
         description
         image
@@ -41,26 +41,26 @@ mutation CreateGroup($input: GroupInput) {
     }
 }
 `
-export async function removeGroup(groupId) {
+export async function removeGroup(entityID) {
     const variables = {
-        "groupId": groupId
+        "entityID": entityID
     }
     const res = await http_post({ query: removeGroupQuery, variables })
     const result = await res.json()
     return result;
 }
-export async function updateGroup(groupId, input) {
+export async function updateGroup(entityID, input) {
     const variables = {
-        "groupId": groupId,
+        "entityID": entityID,
         "input": input
     }
     const res = await http_post({ query: updateGroupQuery, variables })
     const result = await res.json()
     return result;
 }
-export async function readGroup(groupId) {
+export async function readGroup(entityID) {
     const variables = {
-        "groupId": groupId
+        "entityID": entityID
     }
     const res = await http_post({ query: readGroupQuery, variables })
     const result = await res.json()
@@ -82,9 +82,3 @@ export async function createGroup(input) {
     const result = await res.json()
     return result;
 }
-
-export const fields = [
-    { "title": "Title", "name": "title", "type": "text" },
-    { "title": "Description", "name": "description", "type": "text" },
-    { "title": "Image", "name": "image", "type": "file" },
-]

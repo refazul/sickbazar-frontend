@@ -1,22 +1,22 @@
 import { http_post } from "./helper";
 
 const removeCategoryQuery = `
-mutation Mutation($categoryId: ID!) {
-    deleteCategory(categoryID: $categoryId) {
+mutation Mutation($entityID: ID!) {
+    deleteCategory(entityID: $entityID) {
         success
     }
 }  
 `
 const updateCategoryQuery = `
-mutation Mutation($categoryId: ID!, $input: CategoryInput) {
-    updateCategory(categoryID: $categoryId, input: $input) {
+mutation Mutation($entityID: ID!, $input: CategoryInput) {
+    updateCategory(entityID: $entityID, input: $input) {
         success
     }
 }
 `
 const readCategoryQuery = `
-query ReadCategory($categoryId: ID!) {
-    readCategory(categoryID: $categoryId) {
+query ReadCategory($entityID: ID!) {
+    readCategory(entityID: $entityID) {
         title
         description
         image
@@ -41,26 +41,26 @@ mutation CreateCategory($input: CategoryInput) {
     }
 }
 `
-export async function removeCategory(categoryId) {
+export async function removeCategory(entityID) {
     const variables = {
-        "categoryId": categoryId
+        "entityID": entityID
     }
     const res = await http_post({ query: removeCategoryQuery, variables })
     const result = await res.json()
     return result;
 }
-export async function updateCategory(categoryId, input) {
+export async function updateCategory(entityID, input) {
     const variables = {
-        "categoryId": categoryId,
+        "entityID": entityID,
         "input": input
     }
     const res = await http_post({ query: updateCategoryQuery, variables })
     const result = await res.json()
     return result;
 }
-export async function readCategory(categoryId) {
+export async function readCategory(entityID) {
     const variables = {
-        "categoryId": categoryId
+        "entityID": entityID
     }
     const res = await http_post({ query: readCategoryQuery, variables })
     const result = await res.json()
@@ -82,9 +82,3 @@ export async function createCategory(input) {
     const result = await res.json()
     return result;
 }
-
-export const fields = [
-    { "title": "Title", "name": "title", "type": "text" },
-    { "title": "Description", "name": "description", "type": "text" },
-    { "title": "Image", "name": "image", "type": "file" },
-]
