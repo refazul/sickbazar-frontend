@@ -70,7 +70,7 @@ export const products = [{
     "attributes": ["attributeID1", "attributeID2"],
     "price": [
         {
-            "selector": { "color": "white", "size": "xs" },
+            "selector": [{name: "color", value: "white"}, {name: "size", value: "xs" }],
             "stocks": [
                 { "vendorID": "newegg", "price": 30, "quantity": 10, "sku": "sadfasd324234", "image": "", "unit": "pc", },
                 { "vendorID": "aaawave", "price": 35, "quantity": 5, "sku": "dfahrtgyrt34", "image": "", "unit": "lot" },

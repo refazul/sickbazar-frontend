@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CheckIcon, PencilIcon } from '@heroicons/react/solid'
 
 
 export function Options({ options, onClick }) {
@@ -285,9 +286,19 @@ export function CellColor({ text, textcolor, bgcolor }) {
         </td>
     )
 }
-export function Cell({ text }) {
+export function Cell({ initValue, editable, onChangeCallback }) {
+    const [value, setValue] = useState(initValue);
+    function onChange(e) {
+        const newValue = e.target.value;
+        setValue(newValue);
+        onChangeCallback(newValue);
+    }
     return (
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{text}</td>
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {
+                editable ? <input type="text" value={value} onChange={onChange} /> : <div>{initValue}</div>
+            }
+        </td>
     )
 }
 export function CellLink({ text, link }) {
@@ -297,5 +308,26 @@ export function CellLink({ text, link }) {
                 {text}
             </a>
         </td>
+    )
+}
+export function Row({ object, saveCallback }) {
+    const [editable, setEditable] = useState(false);
+    function onChangeCallback(key, newValue) {
+        object[key] = newValue;
+    }
+    return (
+        <tr>
+            {
+                Object.keys(object).map((k) => {
+                    return <Cell editable={editable} initValue={object[k]} onChangeCallback={(newValue) => { onChangeCallback(k, newValue) }}></Cell>
+                })
+            }
+            <div className={editable ? 'hidden' : ''} onClick={() => { setEditable(true) }}>
+                <PencilIcon></PencilIcon>
+            </div>
+            <div className={editable ? '' : 'hidden'} onClick={() => { setEditable(false); saveCallback(object); }}>
+                <CheckIcon></CheckIcon>
+            </div>
+        </tr>
     )
 }

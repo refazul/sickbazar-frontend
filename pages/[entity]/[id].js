@@ -1,5 +1,5 @@
 import { readEntity } from '../../services/entity';
-import { Options, BreadCrumb, ImageGallery, Table, Cell, CellMultiLine } from '../../components/bonik/elements';
+import { Options, BreadCrumb, ImageGallery, Table, Cell, CellMultiLine, Row } from '../../components/bonik/elements';
 import React, { useState } from 'react';
 import { color_array, size_array } from '../../data';
 
@@ -66,19 +66,14 @@ export default function EntityDetail({ entity, object }) {
                     }
                     {
                         entity = 'attributes' ? <div>
-                            <Table columns={[{ title: "Title" }, { title: "Value" }, { title: "Color" }, { title: "Image" }]}>
-                             {
-                                object.options.map((option) => {
-                                    return (
-                                        <tr>
-                                            <Cell text={option.title}></Cell>
-                                            <Cell text={option.value}></Cell>
-                                            <Cell text={option.color}></Cell>
-                                            <Cell text={option.image}></Cell>
-                                        </tr>
-                                    )
-                                })
-                            }
+                            <Table columns={[{ title: "Title" }, { title: "Value" }, { title: "Color" }, { title: "Image" }, { title: "" }]}>
+                                {
+                                    object.options.map((option) => {
+                                        return (
+                                            <Row object={option} saveCallback={(object) => { console.log(option) }}></Row>
+                                        )
+                                    })
+                                }
                             </Table>
                         </div> : <div></div>
                     }
@@ -100,7 +95,6 @@ export async function getServerSideProps(context) {
         param.extra_fields = ['name', 'type', 'options{title, value, color, image}'];
     }
     props.object = await readEntity(entity, id, param);
-    console.log(props.object)
 
     return {
         props

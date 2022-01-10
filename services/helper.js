@@ -31,7 +31,6 @@ export function singularize(string = '') {
         i: 'us',
         zes: '',
         ses: '',
-        es: '',
         s: ''
     };
     return string.replace(
