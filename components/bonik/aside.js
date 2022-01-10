@@ -23,8 +23,8 @@ export default function Aside() {
                     items.map((item) => {
                         const active = router.pathname === item.link;
                         return (
-                            <div key={item.link} className={`${asidestyles.aside_item_wrapper_outer} ${active ? asidestyles.aside_item_wrapper_active : ''}`} onClick={() => router.push(item.link)}>
-                                <a className={`${asidestyles.aside_item_wrapper}`}>
+                            <div key={item.link} className={`${asidestyles.aside_item_wrapper_outer} ${active ? asidestyles.aside_item_wrapper_active : ''}`}>
+                                <a className={`${asidestyles.aside_item_wrapper}`} href={item.link} onClick={(e) => {e.preventDefault(); router.push(item.link)}}>
                                     <div className={asidestyles.aside_item_wrapper_inner}>
                                         <div className='icon'></div>
                                         <span className={asidestyles.aside_item}>{item.title}</span>

@@ -39,6 +39,9 @@ export function singularize(string = '') {
         r => endings[r]
     );
 }
+export function pluralize(string) {
+    return string.slice(-1) == 'y' ? string.slice(0, -1) + 'ies' : string + 's';
+  }
 export function capitalize(string = '') {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }

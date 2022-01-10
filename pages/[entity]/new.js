@@ -1,7 +1,5 @@
 import { Form, Input, Dropdown, Select } from '../../components/bonik/form';
-import { createProduct } from '../../services/product';
-import { createGroup, readGroups } from '../../services/group';
-import { createCategory, readCategories } from '../../services/category';
+import { createEntity, readEntities } from '../../services/entity';
 import { singularize, capitalize } from '../../services/helper';
 import { s3_upload } from '../../services/s3client';
 
@@ -10,13 +8,12 @@ export default function EntityNew({ entity, ...rest }) {
         const { title, description, groupID, categoryIDs } = data
         const image = data.image && data.image.length > 0 ? await s3_upload(data.image[0]) : undefined;
 
+        const input = { title, description, image }
         if (entity == 'products') {
-            const result = createProduct({ title, description, image, groupID, categoryIDs });
-        } else if (entity == 'groups') {
-            const result = createGroup({ title, description, image });
-        } else if (entity == 'categories') {
-            const result = createCategory({ title, description, image });
+            input.groupID = groupID;
+            input.categoryIDs = categoryIDs;
         }
+        const result = createEntity(entity, input);
     }
     return (
         <div>
@@ -41,8 +38,8 @@ export async function getServerSideProps(context) {
     const props = { entity }
 
     if (entity == 'products') {
-        props.groups = await readGroups('');
-        props.categories = await readCategories('');
+        props.groups = await readEntities('group', '');
+        props.categories = await readEntities('category', '');
         /**
          * attributes = readAttributes('')
          * "Add Option" CLICK => 1 Single DropDown(attribute keynames) & 1 Multi Dropdown(of the attribute values)

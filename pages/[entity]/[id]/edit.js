@@ -1,7 +1,5 @@
-import { Form, Input, Select } from '../../../components/bonik/form';
-import { updateProduct, readProduct } from '../../../services/product';
-import { updateGroup, readGroup, readGroups } from '../../../services/group';
-import { updateCategory, readCategory, readCategories } from '../../../services/category';
+import { Dropdown, Form, Input, Select } from '../../../components/bonik/form';
+import { updateEntity, readEntity, readEntities } from '../../../services/entity';
 import { singularize, capitalize } from '../../../services/helper';
 import { s3_upload } from '../../../services/s3client';
 
@@ -10,13 +8,12 @@ export default function EntityEdit({ entity, object, ...rest }) {
         const { title, description, groupID } = data
         const image = data.image && data.image.length > 0 ? await s3_upload(data.image[0]) : object.image;
 
+        const input = { title, description, image }
         if (entity == 'products') {
-            const result = updateProduct(id, { title, description, image, groupID });
-        } else if (entity == 'groups') {
-            const result = updateGroup(id, { title, description, image });
-        } else if (entity == 'categories') {
-            const result = updateCategory(id, { title, description, image });
+            input.groupID = groupID;
+            input.categoryIDs = categoryIDs;
         }
+        const result = updateEntity(id, input);
     }
     return (
         <div>
@@ -25,7 +22,26 @@ export default function EntityEdit({ entity, object, ...rest }) {
                 <Input name="description" placeholder="Description" />
                 <Input name="image" type="file" />
                 {
-                    entity == 'products' ? <Select name="groupID" options={rest.groups.map(g => { return { title: g.title, value: g.id } })} /> : <div></div>
+                    entity == 'products' ? <Select name="groupID" options={
+                        rest.groups.map(g => {
+                            const r = { title: g.title, value: g.id };
+                            if (object.groupID == g.id) {
+                                r.selected = true;
+                            }
+                            return r;
+                        })
+                    } /> : <div></div>
+                }
+                {
+                    entity == 'products' ? <Dropdown name="categoryIDs" options={
+                        rest.categories.map(c => {
+                            const r = { title: c.title, value: c.id };
+                            if (object.categoryIDs.indexOf(c.id) > -1) {
+                                r.selected = true;
+                            }
+                            return r;
+                        })
+                    } /> : <div></div>
                 }
                 <button type="submit">Submit</button>
             </Form>
@@ -37,15 +53,16 @@ export async function getServerSideProps(context) {
     const { entity, id } = context.query;
     const props = { entity }
 
+    const param = {};
     if (entity == 'products') {
-        props.object = await readProduct(id);
-        props.groups = await readGroups('');
-    } else if (entity == 'groups') {
-        props.object = await readGroup(id);
-    } else if (entity == 'categories') {
-        props.object = await readCategory(id);
+        param.extra_fields = ['groupID', 'categoryIDs'];
     }
-    
+    props.object = await readEntity(entity, id, param);
+    if (entity == 'products') {
+        props.groups = await readEntities('groups', '');
+        props.categories = await readEntities('categories', '');
+    }
+
     return {
         props
     }

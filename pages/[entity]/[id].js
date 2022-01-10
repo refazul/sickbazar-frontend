@@ -1,6 +1,4 @@
-import { readProduct } from '../../services/product';
-import { readGroup } from '../../services/group';
-import { readCategory } from '../../services/category';
+import { readEntity } from '../../services/entity';
 import { Options, BreadCrumb, ImageGallery } from '../../components/bonik/elements';
 import React, { useState } from 'react';
 import { color_array, size_array } from '../../data';
@@ -68,13 +66,12 @@ export async function getServerSideProps(context) {
     const { entity, id } = context.query;
     const props = { entity }
 
+    const param = {};
     if (entity == 'products') {
-        props.object = await readProduct(id);
-    } else if (entity == 'groups') {
-        props.object = await readGroup(id);
-    } else if (entity == 'categories') {
-        props.object = await readCategory(id);
+        param.extra_fields = ['groupID', 'categoryIDs'];
     }
+    props.object = await readEntity(entity, id, param);
+
     return {
         props
     }

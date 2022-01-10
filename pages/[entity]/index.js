@@ -1,20 +1,12 @@
 import { useRouter } from 'next/router';
-import { readProducts, removeProduct } from '../../services/product';
-import { readGroups, removeGroup } from '../../services/group';
-import { readCategories, removeCategory } from '../../services/category';
+import { readEntities, removeEntity } from '../../services/entity';
 import { singularize, capitalize } from '../../services/helper';
 import globalstyles from '../../components/bonik/global.module.css';
 
 export default function EntityList({ entity, objects }) {
     const router = useRouter();
     const onDeleteClick = async (entity, object) => {
-        if (entity == 'products') {
-            removeProduct(object.id)
-        } else if (entity == 'groups') {
-            removeGroup(object.id);
-        } else if (entity == 'categories') {
-            removeCategory(object.id);
-        }
+        removeEntity(entity, object.id)
     }
     if (!objects) return <div></div>
     return (
@@ -65,13 +57,8 @@ export async function getServerSideProps(context) {
     const { entity } = context.query;
     const props = { entity }
 
-    if (entity == 'products') {
-        props.objects = await readProducts('');
-    } else if (entity == 'groups') {
-        props.objects = await readGroups('');
-    } else if (entity == 'categories') {
-        props.objects = await readCategories('');
-    }
+    props.objects = await readEntities(entity, '');
+    
     return {
         props
     }
