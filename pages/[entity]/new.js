@@ -7,11 +7,11 @@ import { s3_upload } from '../../services/s3client';
 
 export default function EntityNew({ entity, ...rest }) {
     const onSubmit = async (data) => {
-        const { title, description, groupID } = data
+        const { title, description, groupID, categoryIDs } = data
         const image = data.image && data.image.length > 0 ? await s3_upload(data.image[0]) : undefined;
 
         if (entity == 'products') {
-            const result = createProduct({ title, description, image, groupID });
+            const result = createProduct({ title, description, image, groupID, categoryIDs });
         } else if (entity == 'groups') {
             const result = createGroup({ title, description, image });
         } else if (entity == 'categories') {
@@ -25,7 +25,10 @@ export default function EntityNew({ entity, ...rest }) {
                 <Input name="description" placeholder="Description" />
                 <Input name="image" type="file" />
                 {
-                    entity == 'products' ? <Dropdown name="groupID" options={rest.groups.map(g => { return { title: g.title, value: g.id } })} /> : <div></div>
+                    entity == 'products' ? <Select name="groupID" options={rest.groups.map(g => { return { title: g.title, value: g.id } })} /> : <div></div>
+                }
+                {
+                    entity == 'products' ? <Dropdown name="categoryIDs" options={rest.categories.map(g => { return { title: g.title, value: g.id } })} /> : <div></div>
                 }
                 <button type="submit">Submit</button>
             </Form>

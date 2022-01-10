@@ -136,7 +136,7 @@ export function Dropdown({ register, name, options, setValue, ...rest }) {
             }
             return o;
         })
-        setValue("groupID", new_choices.filter(o => o.selected).map(o => o.value).join(','));
+        setValue(name, new_choices.filter(o => o.selected).map(o => o.value));
         setChoices(new_choices);
     }
     function remove(choice) {
@@ -146,7 +146,7 @@ export function Dropdown({ register, name, options, setValue, ...rest }) {
             }
             return o;
         })
-        setValue("groupID", new_choices.filter(o => o.selected).map(o => o.value).join(','));
+        setValue(name, new_choices.filter(o => o.selected).map(o => o.value));
         setChoices(new_choices);
     }
 }

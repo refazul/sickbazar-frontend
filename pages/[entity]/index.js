@@ -16,7 +16,7 @@ export default function EntityList({ entity, objects }) {
             removeCategory(object.id);
         }
     }
-    if(!objects) return <div></div>
+    if (!objects) return <div></div>
     return (
         <div>
             <div className={globalstyles.formheader_head_container}>
@@ -39,8 +39,8 @@ export default function EntityList({ entity, objects }) {
                                         <div className="mt-4 flex justify-between">
                                             <div>
                                                 <h3 className="text-sm text-gray-700">
-                                                    <a href={'/' + entity +'/' + object.id}>
-                                                        <span aria-hidden="true" className="absolute inset-0"></span>
+                                                    <a href={'/' + entity + '/' + object.id}>
+                                                        {/*<span aria-hidden="true" className="absolute inset-0"></span>*/}
                                                         {object.title}
                                                     </a>
                                                 </h3>
@@ -48,6 +48,7 @@ export default function EntityList({ entity, objects }) {
                                             </div>
                                             <p className="text-sm font-medium text-gray-900">$35</p>
                                         </div>
+                                        <div onClick={() => { onDeleteClick(entity, object) }} className="text-sm font-medium text-gray-900">Delete</div>
                                     </div>
                                 )
                             })
