@@ -65,7 +65,7 @@ export default function EntityDetail({ entity, object }) {
                         </div> : <div></div>
                     }
                     {
-                        entity = 'attributes' ? <div>
+                        entity == 'attributes' ? <div>
                             <Table columns={[{ title: "Title" }, { title: "Value" }, { title: "Color" }, { title: "Image" }, { title: "" }]}>
                                 {
                                     object.options.map((option) => {
@@ -90,9 +90,9 @@ export async function getServerSideProps(context) {
 
     const param = {};
     if (entity == 'products') {
-        param.extra_fields = ['groupID', 'categoryIDs'];
+        param.extra_fields = 'groupID, categoryIDs';
     } else if (entity == 'attributes') {
-        param.extra_fields = ['name', 'type', 'options{title, value, color, image}'];
+        param.extra_fields = 'name, type, options{title, value, color, image}';
     }
     props.object = await readEntity(entity, id, param);
 

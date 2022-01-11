@@ -31,7 +31,7 @@ export async function updateEntity(entity, entityID, input) {
     const result = await res.json()
     return result;
 }
-export async function readEntity(entity, entityID, { extra_fields = [] }) {
+export async function readEntity(entity, entityID, { extra_fields = '' }) {
     const readEntityQuery = `
     query ReadEntity($entityID: ID!) {
         read${capitalize(singularize(entity))}(entityID: $entityID) {
@@ -39,7 +39,7 @@ export async function readEntity(entity, entityID, { extra_fields = [] }) {
             description
             image
             id
-            ${extra_fields.join('\n')}
+            ${extra_fields}
         }
     }
     `
