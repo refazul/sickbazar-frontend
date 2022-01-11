@@ -7,10 +7,6 @@ export function Form({ defaultValues, children, onSubmitCallback, title, button 
     const methods = useForm({ defaultValues });
     const { handleSubmit, formState } = methods;
 
-    async function onSubmit(data) {
-        return defaultValues && defaultValues.id ? onSubmitCallback(defaultValues.id, data) : onSubmitCallback(data);
-    }
-
     return (
         <div>
             <div className={globalstyles.formheader_head_container}>
@@ -21,7 +17,7 @@ export function Form({ defaultValues, children, onSubmitCallback, title, button 
                     <button className={`${globalstyles.formheader_button} red`}>{button}</button>
                 </div>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmitCallback)}>
                 <div className={formstyles.form_content_wrapper}>
                     {
                         React.Children.map(children, child => {

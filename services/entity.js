@@ -17,7 +17,7 @@ export async function removeEntity(entity, entityID) {
 }
 export async function updateEntity(entity, entityID, input) {
     const updateEntityQuery = `
-    mutation Mutation($entityID: ID!, $input: EntityInput) {
+    mutation Mutation($entityID: ID!, $input: ${capitalize(singularize(entity))}Input) {
         update${capitalize(singularize(entity))}(entityID: $entityID, input: $input) {
             success
         }
@@ -43,7 +43,6 @@ export async function readEntity(entity, entityID, { extra_fields = '' }) {
         }
     }
     `
-    console.log(readEntityQuery);
     const variables = {
         "entityID": entityID
     }
@@ -71,7 +70,7 @@ export async function readEntities(entity, title) {
 }
 export async function createEntity(entity, input) {
     const createEntityQuery = `
-    mutation CreateEntity($input: EntityInput) {
+    mutation CreateEntity($input: ${capitalize(singularize(entity))}Input) {
         create${capitalize(singularize(entity))}(input: $input) {
             success
         }
