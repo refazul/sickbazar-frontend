@@ -46,3 +46,22 @@
     margin-top: 0.25rem;
     margin-left: 0.25rem;
 }
+.button {
+    font-size: 14px;
+    border-radius: 5px;
+    line-height: 1;
+    transition: all 150ms ease-in-out 0s;
+    -webkit-box-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    align-items: center;
+    outline: none;
+    border: none;
+    cursor: pointer;
+    padding: 11px 2rem;
+    font-weight: 600;
+}
+.red {
+    color: rgb(233, 69, 96);
+    background: rgb(255, 225, 230);
+}

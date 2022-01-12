@@ -1,4 +1,4 @@
-import { Dropdown, Form, Input, Select } from '../form';
+import { Dropdown, Form, Input, Select, Submit } from '../form';
 import { singularize, capitalize } from '../../../services/helper';
 import { s3_upload } from '../../../services/s3client';
 
@@ -19,12 +19,12 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
         }
     }
     return (
-        <Form onSubmitCallback={onSubmit} defaultValues={object} title={"Edit " + capitalize(singularize(entity))} button={"Back to " + capitalize(singularize(entity)) + " List"}>
+        <Form onSubmitCallback={onSubmit} defaultValues={object} title={(object.id ? "Edit " : "New ") + capitalize(singularize(entity))} button={"Back to " + capitalize(singularize(entity)) + " List"}>
             <Input name="title" placeholder="Title" />
             <Input name="description" placeholder="Description" />
             <Input name="image" type="file" />
             {
-                entity == 'products' ? <Select name="groupID" options={
+                entity == 'products' ? <Select title="Group" name="groupID" options={
                     rest.groups.map(g => {
                         const r = { title: g.title, value: g.id };
                         if (object.groupID == g.id) {
@@ -35,7 +35,7 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
                 } /> : <div></div>
             }
             {
-                entity == 'products' ? <Dropdown name="categoryIDs" options={
+                entity == 'products' ? <Dropdown name="categoryIDs" title="Categories" options={
                     rest.categories.map(c => {
                         const r = { title: c.title, value: c.id };
                         if (object.categoryIDs && object.categoryIDs.indexOf(c.id) > -1) {
@@ -45,7 +45,7 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
                     })
                 } /> : <div></div>
             }
-            <button type="submit">Submit</button>
+            <Submit text="submit"/>
         </Form>
     )
 }

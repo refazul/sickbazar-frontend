@@ -8,25 +8,7 @@ body {
     font-family: "Open Sans", Roboto, -apple-system, BlinkMacSystemFont, "Segoe UI", Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
     line-height: 1.5;
 }
-button {
-    font-size: 14px;
-    border-radius: 5px;
-    line-height: 1;
-    transition: all 150ms ease-in-out 0s;
-    -webkit-box-pack: center;
-    justify-content: center;
-    -webkit-box-align: center;
-    align-items: center;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    padding: 11px 2rem;
-    font-weight: 600;
-}
-button.red {
-    color: rgb(233, 69, 96);
-    background: rgb(255, 225, 230);
-}
+
 .dropdown:hover .dropdown-menu {
     display: block;
 }
