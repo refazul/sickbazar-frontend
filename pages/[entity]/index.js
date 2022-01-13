@@ -1,18 +1,57 @@
 import { useRouter } from 'next/router';
 import { readEntities, removeEntity } from '../../services/entity';
 import { singularize, capitalize } from '../../services/helper';
+import { API_URL } from '../../services/api';
 import globalstyles from '../../components/bonik/global.module.css';
 import { PencilIcon, XIcon } from '@heroicons/react/solid';
 import { useEffect, useState } from 'react';
+import useSWR from 'swr';
 
-export default function EntityList({ entity, objects }) {
-    const [objs, setObjs] = useState(objects);
-    const router = useRouter();
+const fetcher = (args) => {
+    return fetch(API_URL, {
+        body: JSON.stringify({ query: args.query, variables: args.variables }),
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        method: 'POST'
+    }).then(res => res.json())
+}
+
+function useEntities({ entity, title }) {
+    const { data, error } = useSWR({
+        query: `query readEntities($title: String!) {
+                    read${capitalize(entity)}(title: $title) {
+                        title
+                        description
+                        image
+                        id
+                    }
+                }`,
+        variables: { title }
+    }, fetcher)
+
+    return {
+        objects: data,
+        isLoading: !error && !data,
+        isError: error
+    }
+}
+
+export default function EntityList({ entity }) {
+    const { objects, isLoading, isError } = useEntities({ entity: entity, title: '' })
+
+    if (isLoading) return <div />
+    if (isError) return <div />
+    if (!objects.data) return <div />
+    if (!objects.data['read' + capitalize(entity)]) return <div />
+
+    /*
     const onDeleteClick = async (entity, object) => {
         const result = await removeEntity(entity, object.id);
         const new_objs = objs.filter(o => o.id != object.id);
         setObjs(new_objs);
     }
+    */
     return (
         <div>
             <div className={globalstyles.formheader_head_container}>
@@ -26,12 +65,12 @@ export default function EntityList({ entity, objects }) {
                 <div className="max-w-2xl mx-auto py-4 px-4 sm:px-6 lg:max-w-7xl lg:px-8">
                     <div className="mt-6 grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
                         {
-                            objs.map((object) => {
+                            objects.data['read' + capitalize(entity)].map((object) => {
                                 return (
                                     <div className="group relative" >
                                         <XIcon className="absolute right-0 z-20 hidden group-hover:block cursor-pointer w-5 h-5 hover:text-red-500" onClick={() => { onDeleteClick(entity, object) }} />
-                                        <PencilIcon className="absolute right-5 z-20 hidden group-hover:block cursor-pointer w-5 h-5 hover:text-yellow-500" onClick={() => { router.push([entity, object.id, 'edit'].join('/')) }}/>
-                                        <a onClick={(e) => {e.preventDefault(); router.push('/' + entity + '/' + object.id)}} href={'/' + entity + '/' + object.id}>
+                                        <PencilIcon className="absolute right-5 z-20 hidden group-hover:block cursor-pointer w-5 h-5 hover:text-yellow-500" onClick={() => { router.push([entity, object.id, 'edit'].join('/')) }} />
+                                        <a onClick={(e) => { e.preventDefault(); router.push('/' + entity + '/' + object.id) }} href={'/' + entity + '/' + object.id}>
                                             <div className="w-full min-h-80 bg-gray-200 aspect-w-1 aspect-h-1 rounded-md overflow-hidden group-hover:opacity-75 lg:aspect-none">
                                                 <img src={object.image} alt={object.title} className="w-full h-full object-center object-cover lg:w-full lg:h-full" />
                                             </div>
@@ -49,7 +88,6 @@ export default function EntityList({ entity, objects }) {
                                 )
                             })
                         }
-
                     </div>
                 </div>
             </div>
@@ -60,8 +98,6 @@ export default function EntityList({ entity, objects }) {
 export async function getServerSideProps(context) {
     const { entity } = context.query;
     const props = { entity }
-
-    props.objects = await readEntities(entity, '');
 
     return {
         props
