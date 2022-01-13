@@ -26,12 +26,9 @@ export function Options({ options, onClick }) {
     return (
         <div className="mt-4 lg:mt-0 lg:row-span-3">
             <h2 className="sr-only">Product information</h2>
-            <p className="text-3xl text-gray-900">$192</p>
-
-            <Reviews></Reviews>
 
             {/** form */}
-            <div className="mt-12">
+            <div className="mt-0">
                 <Colors colors={colors} onClick={onColorPick}></Colors>
                 <Sizes sizes={sizes} onClick={onSizePick}></Sizes>
 
@@ -189,6 +186,15 @@ export function BreadCrumb() {
                 </li>
             </ol>
         </nav>
+    )
+}
+export function Image({ image }) {
+    return (
+        <div className="p-6">
+            <div className="aspect-w-3 aspect-h-4 rounded-lg overflow-hidden lg:block">
+                <img src={image} alt="" className="w-full h-full object-center object-cover" />
+            </div>
+        </div>
     )
 }
 export function ImageGallery() {

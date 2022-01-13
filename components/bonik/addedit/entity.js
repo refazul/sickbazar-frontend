@@ -1,11 +1,13 @@
 import { Dropdown, Form, Input, Select, Submit } from '../form';
-import { singularize, capitalize } from '../../../services/helper';
+import { singularize, capitalize, isValidHttpUrl } from '../../../services/helper';
 import { s3_upload } from '../../../services/s3client';
+import { useRouter } from 'next/router';
 
-export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...rest}) {
+export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...rest }) {
+    const router = useRouter();
     const onSubmit = async (data) => {
         const { title, description, groupID, categoryIDs } = data
-        const image = data.image && data.image.length > 0 ? await s3_upload(data.image[0]) : object.image;
+        const image = isValidHttpUrl(data.image) ? data.image : (data.image && data.image.length > 0 ? await s3_upload(data.image[0]) : object.image);
 
         const input = { title, description, image }
         if (entity == 'products') {
@@ -13,13 +15,14 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
             input.categoryIDs = categoryIDs;
         }
         if (object.id) {
-            const result = updateEntity(entity, object.id, input);
+            const result = await updateEntity(entity, object.id, input);
         } else {
-            const result = createEntity(entity, input);
+            const result = await createEntity(entity, input);
+            router.push('/' + entity + '/' + result.entity._id + '/edit');
         }
     }
     return (
-        <Form onSubmitCallback={onSubmit} defaultValues={object} title={(object.id ? "Edit " : "New ") + capitalize(singularize(entity))} button={"Back to " + capitalize(singularize(entity)) + " List"}>
+        <Form onSubmitCallback={onSubmit} defaultValues={object} title={(object.id ? "Edit " : "New ") + capitalize(singularize(entity))} buttonText={"Back to " + capitalize(singularize(entity)) + " List"} buttonOnClick={() => { router.push('/' + entity) }}>
             <Input name="title" placeholder="Title" />
             <Input name="description" placeholder="Description" />
             <Input name="image" type="file" />
@@ -45,7 +48,7 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
                     })
                 } /> : <div></div>
             }
-            <Submit text="submit"/>
+            <Submit text="Save" />
         </Form>
     )
 }

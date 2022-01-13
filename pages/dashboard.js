@@ -1,5 +1,3 @@
-import { Dropdown } from "../components/bonik/dropdown"
-
 const options = [
     { title: "One", value: "1" },
     { title: "Two", value: "2" },
@@ -12,7 +10,7 @@ const options = [
 export default function Dashboard() {
     return (
         <div>
-            <Dropdown options={options}></Dropdown>
+            Dashboard
         </div>
     )
 }

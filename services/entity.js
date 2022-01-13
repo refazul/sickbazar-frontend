@@ -20,6 +20,7 @@ export async function updateEntity(entity, entityID, input) {
     mutation Mutation($entityID: ID!, $input: ${capitalize(singularize(entity))}Input) {
         update${capitalize(singularize(entity))}(entityID: $entityID, input: $input) {
             success
+            entity
         }
     }
     `
@@ -29,7 +30,7 @@ export async function updateEntity(entity, entityID, input) {
     }
     const res = await http_post({ query: updateEntityQuery, variables })
     const result = await res.json()
-    return result;
+    return result.data['update' + capitalize(singularize(entity))];
 }
 export async function readEntity(entity, entityID, { extra_fields = '' }) {
     const readEntityQuery = `
@@ -73,6 +74,7 @@ export async function createEntity(entity, input) {
     mutation CreateEntity($input: ${capitalize(singularize(entity))}Input) {
         create${capitalize(singularize(entity))}(input: $input) {
             success
+            entity
         }
     }
     `
@@ -81,5 +83,5 @@ export async function createEntity(entity, input) {
     }
     const res = await http_post({ query: createEntityQuery, variables })
     const result = await res.json()
-    return result;
+    return result.data['create' + capitalize(singularize(entity))];
 }

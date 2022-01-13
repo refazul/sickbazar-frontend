@@ -4,7 +4,7 @@ import globalstyles from './global.module.css';
 import { useForm } from 'react-hook-form';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon, XIcon } from '@heroicons/react/solid'
 
-export function Form({ defaultValues, children, onSubmitCallback, title, button }) {
+export function Form({ defaultValues, children, onSubmitCallback, title, buttonText, buttonOnClick }) {
     const methods = useForm({ defaultValues });
     const { handleSubmit, formState } = methods;
 
@@ -15,7 +15,7 @@ export function Form({ defaultValues, children, onSubmitCallback, title, button 
                     <div className={globalstyles.formheader_title_wrapper}>
                         <h2 className={globalstyles.formheader_title}>{title}</h2>
                     </div>
-                    <button className={`${globalstyles.formheader_button} red`}>{button}</button>
+                    <Button text={buttonText} onClick={buttonOnClick}></Button>
                 </div>
             </div>
             <form onSubmit={handleSubmit(onSubmitCallback)}>
@@ -217,6 +217,13 @@ function DropdownButton({ collapsed, toggleCallback }) {
             <div onClick={() => { toggleCallback() }} className={(collapsed ? "" : " hidden ") + "cursor-pointer w-4 h-4"}>
                 <ChevronUpIcon />
             </div>
+        </div>
+    )
+}
+export function Button({ text, onClick }) {
+    return (
+        <div className={`text-center`}>
+            <button onClick={onClick} className={`${formstyles.button}  ${formstyles.red}`} type="button">{text}</button>
         </div>
     )
 }
