@@ -85,3 +85,6 @@ export async function createEntity(entity, input) {
     const result = await res.json()
     return result.data['create' + capitalize(singularize(entity))];
 }
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
