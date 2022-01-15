@@ -3,7 +3,7 @@ import { singularize, capitalize, isValidHttpUrl } from '../../../services/helpe
 import { s3_upload } from '../../../services/s3client';
 import { useRouter } from 'next/router';
 
-export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...rest }) {
+export function EntityAddEdit({ entity, object, createEntity, updateEntity, groups, categories, attributes }) {
     const router = useRouter();
     const onSubmit = async (data) => {
         const { title, description, groupID, categoryIDs } = data
@@ -28,7 +28,7 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
             <Input name="image" type="file" />
             {
                 entity == 'products' ? <Select title="Group" name="groupID" options={
-                    rest.groups.map(g => {
+                    groups.map(g => {
                         const r = { title: g.title, value: g.id };
                         if (object.groupID == g.id) {
                             r.selected = true;
@@ -39,7 +39,7 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
             }
             {
                 entity == 'products' ? <Dropdown name="categoryIDs" title="Categories" options={
-                    rest.categories.map(c => {
+                    categories.map(c => {
                         const r = { title: c.title, value: c.id };
                         if (object.categoryIDs && object.categoryIDs.indexOf(c.id) > -1) {
                             r.selected = true;
@@ -49,7 +49,7 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
                 } /> : <div></div>
             }
             {
-                entity == 'products' ? <CrossAttribute attributes={rest.attributes.map(a => ({...a, value : a.name}))} title="Attributes" /> : <div></div>
+                entity == 'products' ? <CrossAttribute attributes={attributes.map(a => ({...a, value : a.name}))} title="Attributes" /> : <div></div>
             }
             <Submit text="Save" />
         </Form>

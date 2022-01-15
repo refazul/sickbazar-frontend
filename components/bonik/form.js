@@ -98,14 +98,59 @@ export function Select({ register, options = [], name, title, setValue, ...rest 
         </div>
     )
 }
+function cartesianProduct(arr) {
+    return arr.reduce(function (a, b) {
+        return a.map(function (x) {
+            return b.map(function (y) {
+                return x.concat([y]);
+            })
+        }).reduce(function (a, b) { return a.concat(b) }, [])
+    }, [[]])
+}
+function Variants({ cross }) {
+    function onChange(v) {
+        console.log(v);
+    }
+    return (
+        <div>
+            {
+                cross.map(variant => <Variant variant={variant} onChange={onChange} />)
+            }
+        </div>
+    )
+}
+function Variant({ variant, onChange }) {
+    return (
+        <div className={formstyles.form_field_wrapper}>
+            <div className={formstyles.form_item_wrapper}>
+                <span>{variant.join(',')}</span>
+                <input type="text" onChange={(e) => {onChange(variant.concat(e.target.value))}}/>
+            </div>
+        </div>
+    )
+}
+
 export function CrossAttribute({ attributes, title }) {
     const [attrs, setAttrs] = useState(attributes.filter(c => c.selected))
+    const [cross, setCross] = useState([])
+    function onAttrUpdate(attributes) {
+        const selected_attrs = attributes.filter(c => c.selected);
+        setAttrs(selected_attrs);
+    }
+    function onVariantUpdate(variants) {
+        var selected_options = [];
+        attrs.forEach(attr => {
+            selected_options.push(attr.options.filter(o => o.selected).map(o => o.value));
+        });
+        setCross(cartesianProduct(selected_options));
+    }
     return (
         <div className="w-full">
-            <Dropdown options={attributes} title={title} onChoiceUpdate={attributes => setAttrs(attributes.filter(c => c.selected == true))} />
+            <Dropdown options={attributes} title={title} onChoiceUpdate={onAttrUpdate} />
             {
-                attrs.map(attr => <Dropdown options={attr.options} title={attr.title} />)
+                attrs.map(attr => <Dropdown key={attr.value} options={attr.options} title={attr.title} onChoiceUpdate={onVariantUpdate} />)
             }
+            <Variants cross={cross} />
         </div>
     )
 }
