@@ -108,8 +108,9 @@ function cartesianProduct(arr) {
     }, [[]])
 }
 function Variants({ cross }) {
-    function onChange(v) {
-        console.log(v);
+    function onChange(variant, change) {
+        console.log(variant, change)
+        // to be continued
     }
     return (
         <div>
@@ -120,11 +121,13 @@ function Variants({ cross }) {
     )
 }
 function Variant({ variant, onChange }) {
+    // reduce variant
     return (
         <div className={formstyles.form_field_wrapper}>
             <div className={formstyles.form_item_wrapper}>
-                <span>{variant.join(',')}</span>
-                <input type="text" onChange={(e) => {onChange(variant.concat(e.target.value))}}/>
+                <span>T</span>
+                <input type="text" onChange={(e) => {onChange(variant, {price: e.target.value})}}/>
+                <input type="text" onChange={(e) => {onChange(variant, {stock: e.target.value})}}/>
             </div>
         </div>
     )
@@ -140,7 +143,7 @@ export function CrossAttribute({ attributes, title }) {
     function onVariantUpdate(variants) {
         var selected_options = [];
         attrs.forEach(attr => {
-            selected_options.push(attr.options.filter(o => o.selected).map(o => o.value));
+            selected_options.push(attr.options.filter(o => o.selected))//map;
         });
         setCross(cartesianProduct(selected_options));
     }
