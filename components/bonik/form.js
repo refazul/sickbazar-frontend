@@ -98,8 +98,19 @@ export function Select({ register, options = [], name, title, setValue, ...rest 
         </div>
     )
 }
+export function CrossAttribute({ attributes, title }) {
+    const [attrs, setAttrs] = useState(attributes.filter(c => c.selected))
+    return (
+        <div className="w-full">
+            <Dropdown options={attributes} title={title} onChoiceUpdate={attributes => setAttrs(attributes.filter(c => c.selected == true))} />
+            {
+                attrs.map(attr => <Dropdown options={attr.options} title={attr.title} />)
+            }
+        </div>
+    )
+}
 
-export function Dropdown({ register, options, name, title, setValue, ...rest }) {
+export function Dropdown({ register, options, name, title, setValue, onChoiceUpdate, ...rest }) {
     function isOpen() { return visible }
     function toggle() { setVisible(!visible) }
 
@@ -109,7 +120,9 @@ export function Dropdown({ register, options, name, title, setValue, ...rest }) 
     return (
         <div className={formstyles.form_field_wrapper}>
             <div className={formstyles.form_item_wrapper}>
-                <input {...register(name)} type="hidden" />
+                {
+                    register ? <input {...register(name)} type="hidden" /> : <div></div>
+                }
                 <div className="flex flex-auto flex-wrap">
                     <div className="p-2">{title}</div>
                     <div className="flex flex-auto flex-wrap">
@@ -167,8 +180,13 @@ export function Dropdown({ register, options, name, title, setValue, ...rest }) 
             }
             return o;
         })
-        setValue(name, new_choices.filter(o => o.selected).map(o => o.value));
+        if (setValue) {
+            setValue(name, new_choices.filter(o => o.selected).map(o => o.value));
+        }
         setChoices(new_choices);
+        if (onChoiceUpdate) {
+            onChoiceUpdate(new_choices);
+        }
     }
     function remove(choice) {
         const new_choices = choices.map((o) => {
@@ -177,8 +195,13 @@ export function Dropdown({ register, options, name, title, setValue, ...rest }) 
             }
             return o;
         })
-        setValue(name, new_choices.filter(o => o.selected).map(o => o.value));
+        if (setValue) {
+            setValue(name, new_choices.filter(o => o.selected).map(o => o.value));
+        }
         setChoices(new_choices);
+        if (onChoiceUpdate) {
+            onChoiceUpdate(new_choices);
+        }
     }
 }
 

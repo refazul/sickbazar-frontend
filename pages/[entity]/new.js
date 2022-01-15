@@ -15,6 +15,7 @@ export async function getServerSideProps(context) {
     if (entity == 'products') {
         props.groups = await readEntities('groups', '');
         props.categories = await readEntities('categories', '');
+        props.attributes = await readEntities('attributes', '', { extra_fields : "name, type, options{title, value, color, image}" });
         /**
          * attributes = readAttributes('')
          * "Add Option" CLICK => 1 Single DropDown(attribute keynames) & 1 Multi Dropdown(of the attribute values)

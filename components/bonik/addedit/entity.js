@@ -1,4 +1,4 @@
-import { Dropdown, Form, Input, Select, Submit } from '../form';
+import { CrossAttribute, Dropdown, Form, Input, Select, Submit } from '../form';
 import { singularize, capitalize, isValidHttpUrl } from '../../../services/helper';
 import { s3_upload } from '../../../services/s3client';
 import { useRouter } from 'next/router';
@@ -47,6 +47,9 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, ...r
                         return r;
                     })
                 } /> : <div></div>
+            }
+            {
+                entity == 'products' ? <CrossAttribute attributes={rest.attributes.map(a => ({...a, value : a.name}))} title="Attributes" /> : <div></div>
             }
             <Submit text="Save" />
         </Form>

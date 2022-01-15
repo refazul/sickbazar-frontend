@@ -51,7 +51,7 @@ export async function readEntity(entity, entityID, { extra_fields = '' }) {
     const result = await res.json()
     return result.data['read' + capitalize(singularize(entity))];
 }
-export async function readEntities(entity, title) {
+export async function readEntities(entity, title, { extra_fields = '' } = {}) {
     const readEntitiesQuery = `
     query readEntities($title: String!) {
         read${capitalize(entity)}(title: $title) {
@@ -59,6 +59,7 @@ export async function readEntities(entity, title) {
             description
             image
             id
+            ${extra_fields}
         }
     }
     `
