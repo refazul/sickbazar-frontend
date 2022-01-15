@@ -1,10 +1,15 @@
 import { EntityAddEdit } from '../../components/bonik/addedit/entity';
 import { createEntity, readEntity, readEntities, updateEntity, deleteEntity } from '../../services/entity';
+import useSWR from 'swr';
 
-
-export default function EntityNew({ entity, ...rest }) {
+export default function EntityNew({ entity }) {
+    const groups = useSWR(['groups', ''], readEntities).data;
+    const categories = useSWR(['categories', ''], readEntities).data;
+    const attributes = useSWR(['attributes', '', { extra_fields : "name, type, options{title, value, color, image}" }], readEntities).data;
+    
+    if (!groups || !categories || !attributes) return <div />
     return (
-        <EntityAddEdit entity={entity} object={{}} createEntity={createEntity} updateEntity={updateEntity} {...rest}></EntityAddEdit>
+        <EntityAddEdit entity={entity} object={{}} createEntity={createEntity} updateEntity={updateEntity} groups={groups} categories={categories} attributes={attributes}></EntityAddEdit>
     )
 }
 
@@ -12,17 +17,6 @@ export async function getServerSideProps(context) {
     const { entity } = context.query;
     const props = { entity }
 
-    if (entity == 'products') {
-        props.groups = await readEntities('groups', '');
-        props.categories = await readEntities('categories', '');
-        props.attributes = await readEntities('attributes', '', { extra_fields : "name, type, options{title, value, color, image}" });
-        /**
-         * attributes = readAttributes('')
-         * "Add Option" CLICK => 1 Single DropDown(attribute keynames) & 1 Multi Dropdown(of the attribute values)
-         * Pick one from left => Multi DropDown update
-         * Pick one from the right => Cross Product variant UI below
-         */
-    }
     return {
         props
     }
