@@ -11,14 +11,6 @@
     height: unset;
     margin: -0.75rem;
 }
-.form_field_wrapper {
-    width: 50%;
-    padding: 0.75rem;
-}
-.form_item_wrapper {
-    position: relative;
-    width: 100%;
-}
 .form_label {
     display: block;
     margin-bottom: 6px;

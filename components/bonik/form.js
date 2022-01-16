@@ -1,8 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, Fragment } from "react";
 import formstyles from './form.module.css';
 import globalstyles from './global.module.css';
 import { useForm } from 'react-hook-form';
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon, XIcon } from '@heroicons/react/solid'
+
+import { Menu, Transition } from '@headlessui/react'
+function classNames(...classes) {
+    return classes.filter(Boolean).join(' ')
+}
 
 export function Form({ defaultValues, children, onSubmitCallback, title, buttonText, buttonOnClick }) {
     const methods = useForm({ defaultValues });
@@ -43,8 +48,8 @@ export function Form({ defaultValues, children, onSubmitCallback, title, buttonT
 
 export function Input({ register, name, title, errors, setValue, ...rest }) {
     return (
-        <div className={formstyles.form_field_wrapper}>
-            <div className={formstyles.form_item_wrapper}>
+        <div className="w-1/2 p-3">
+            <div className="relative w-full">
                 <div className={formstyles.form_input_wrapper}>
                     <input {...register(name)} {...rest} className={formstyles.form_input} />
                 </div>
@@ -65,7 +70,7 @@ export function Select_({ register, options, name, title, setValue, ...rest }) {
         </select>
     );
 }
-export function Select({ register, options = [], name, title, setValue, ...rest }) {
+export function Select__({ register, options = [], name, title, setValue, ...rest }) {
     const has_default_option = options.filter(o => o.selected).length > 0;
     const [option, setOption] = useState(has_default_option ? options.filter(o => o.selected)[0].title : "Pick a " + title);
     const count = options.length;
@@ -78,8 +83,8 @@ export function Select({ register, options = [], name, title, setValue, ...rest 
         }
     });
     return (
-        <div className={formstyles.form_field_wrapper}>
-            <div className={formstyles.form_item_wrapper}>
+        <div className="w-1/2 p-3">
+            <div className="relative w-full">
                 <h2 className="inline-block pr-2">{title}</h2>
                 <div className="dropdown inline-block relative">
                     <button className="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
@@ -94,6 +99,53 @@ export function Select({ register, options = [], name, title, setValue, ...rest 
                         ))}
                     </ul>
                 </div>
+            </div>
+        </div>
+    )
+}
+export function Select({ register, options = [], name, title, setValue, ...rest }) {
+    const has_default_option = options.filter(o => o.selected).length > 0;
+    const [option, setOption] = useState(has_default_option ? options.filter(o => o.selected)[0].title : "Pick a " + title);
+    return (
+        <div className="w-1/2 p-3">
+            <div className="relative w-full">
+                <Menu as="div" className="relative inline-block text-left">
+                    <div>
+                        <Menu.Button className="inline-flex justify-center w-full rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100 focus:ring-indigo-500">
+                            {option}
+                            <ChevronDownIcon className="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+                        </Menu.Button>
+                    </div>
+
+                    <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                    >
+                        <Menu.Items className="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <div className="py-1" {...register(name)} {...rest}>
+                                <Menu.Item>
+                                    <a onClick={(e) => { e.preventDefault(); }} className={'text-gray-700 block px-4 py-2 text-sm'}>
+                                        {"Pick a " + title}
+                                    </a>
+                                </Menu.Item>
+                                {options.map((data, index) => (
+                                    <Menu.Item>
+                                        {({ active }) => (
+                                            <a onClick={(e) => { e.preventDefault(); setOption(data.title); setValue(name, data.value) }} className={classNames(active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm')}>
+                                                {data.title}
+                                            </a>
+                                        )}
+                                    </Menu.Item>
+                                ))}
+                            </div>
+                        </Menu.Items>
+                    </Transition>
+                </Menu>
             </div>
         </div>
     )
@@ -123,11 +175,11 @@ function Variants({ cross }) {
 function Variant({ variant, onChange }) {
     // reduce variant
     return (
-        <div className={formstyles.form_field_wrapper}>
-            <div className={formstyles.form_item_wrapper}>
+        <div className="w-1/2 p-3">
+            <div className="relative w-full">
                 <span>T</span>
-                <input type="text" onChange={(e) => {onChange(variant, {price: e.target.value})}}/>
-                <input type="text" onChange={(e) => {onChange(variant, {stock: e.target.value})}}/>
+                <input type="text" onChange={(e) => { onChange(variant, { price: e.target.value }) }} />
+                <input type="text" onChange={(e) => { onChange(variant, { stock: e.target.value }) }} />
             </div>
         </div>
     )
@@ -166,8 +218,8 @@ export function Dropdown({ register, options, name, title, setValue, onChoiceUpd
     const [visible, setVisible] = useState(false);
     const [filter, setFilter] = useState('');
     return (
-        <div className={formstyles.form_field_wrapper}>
-            <div className={formstyles.form_item_wrapper}>
+        <div className="w-1/2 p-3">
+            <div className="relative w-full">
                 {
                     register ? <input {...register(name)} type="hidden" /> : <div></div>
                 }
