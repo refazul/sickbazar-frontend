@@ -5,7 +5,6 @@ import { CheckIcon, BeakerIcon } from '@heroicons/react/solid';
 import asidestyles from './aside.module.css';
 
 const items = [
-    { "title": "Dashboard", "link": "/dashboard" },
     { "title": "Products", "link": "/products" },
     { "title": "Add New Product", "link": "/products/new" },
     { "title": "Groups", "link": "/groups" },
