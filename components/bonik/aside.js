@@ -11,6 +11,8 @@ const items = [
     { "title": "Add New Group", "link": "/groups/new" },
     { "title": "Categories", "link": "/categories" },
     { "title": "Add New Category", "link": "/categories/new" },
+    { "title": "Attributes", "link": "/attributes" },
+    { "title": "Add New Attribute", "link": "/attributes/new" },
 ]
 
 export default function Aside() {
