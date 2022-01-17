@@ -51,7 +51,7 @@ export async function getServerSideProps(context) {
     if (entity == 'products') {
         param.extra_fields = 'groupID, categoryIDs';
     } else if (entity == 'attributes') {
-        param.extra_fields = 'name, type, options{title, value, color, image}';
+        param.extra_fields = 'name, type, options{color, text, image}';
     }
     const object = await readEntity(entity, id, param);
 

@@ -134,7 +134,7 @@ export function Select({ register, options = [], name, title, setValue, ...rest 
                                     </a>
                                 </Menu.Item>
                                 {options.map((data, index) => (
-                                    <Menu.Item>
+                                    <Menu.Item key={index}>
                                         {({ active }) => (
                                             <a onClick={(e) => { e.preventDefault(); setOption(data.title); setValue(name, data.value) }} className={classNames(active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm')}>
                                                 {data.title}
@@ -351,9 +351,20 @@ export function Submit({ text }) {
     )
 }
 
-export function Table({ columns, children }) {
+export function Table({ object, rows = [], columns, register, name, setValue, ...rest }) {
+    const [records, setRecords] = useState(rows);
+    function callback(index, key, newValue) {
+        const newRecord = {
+            ...records[index],
+        }
+        newRecord[key] = newValue
+        const newRecords = Object.assign({}, records);
+        newRecords[index] = newRecord
+        setRecords(newRecords)
+        setValue(name, newRecords);
+    }
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col" {...register(name)} {...rest}>
             <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                 <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                     <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
@@ -361,9 +372,9 @@ export function Table({ columns, children }) {
                             <thead className="bg-gray-50">
                                 <tr>
                                     {
-                                        columns.map((column) => {
+                                        columns.map((column, i) => {
                                             return (
-                                                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th key={i} scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                                     {column.title}
                                                 </th>
                                             )
@@ -372,7 +383,11 @@ export function Table({ columns, children }) {
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">
-                                {children}
+                                {
+                                    Object.keys(records).map((row, index) => {
+                                        return <Row key={index} index={index} row={records[row]} callback={callback} />
+                                    })
+                                }
                             </tbody>
                         </table>
                     </div>
@@ -381,6 +396,33 @@ export function Table({ columns, children }) {
         </div>
     )
 }
+export function Row({ row, index, callback }) {
+    return (
+        <tr>
+            {
+                Object.keys(row).map((cell, i) => {
+                    return <Cell key={i} editable={true} initValue={row[cell]} onChangeCallback={(newValue) => { callback(index, cell, newValue) }}></Cell>
+                })
+            }
+        </tr>
+    )
+}
+export function Cell({ initValue, editable, onChangeCallback }) {
+    const [value, setValue] = useState(initValue || '');
+    function onChange(e) {
+        const newValue = e.target.value;
+        setValue(newValue);
+        onChangeCallback(newValue);
+    }
+    return (
+        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+            {
+                editable ? <input type="text" value={value} onChange={onChange} /> : <div>{initValue}</div>
+            }
+        </td>
+    )
+}
+
 export function CellImageMultiLinel({ image, lines }) {
     return (
         <td className="px-6 py-4 whitespace-nowrap">
@@ -425,21 +467,6 @@ export function CellColor({ text, textcolor, bgcolor }) {
         </td>
     )
 }
-export function Cell({ initValue, editable, onChangeCallback }) {
-    const [value, setValue] = useState(initValue);
-    function onChange(e) {
-        const newValue = e.target.value;
-        setValue(newValue);
-        onChangeCallback(newValue);
-    }
-    return (
-        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            {
-                editable ? <input type="text" value={value} onChange={onChange} /> : <div>{initValue}</div>
-            }
-        </td>
-    )
-}
 export function CellLink({ text, link }) {
     return (
         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
@@ -447,20 +474,5 @@ export function CellLink({ text, link }) {
                 {text}
             </a>
         </td>
-    )
-}
-export function Row({ object, saveCallback }) {
-    function onChangeCallback(key, newValue) {
-        object[key] = newValue;
-        saveCallback(object);
-    }
-    return (
-        <tr>
-            {
-                Object.keys(object).map((k) => {
-                    return <Cell editable={true} initValue={object[k]} onChangeCallback={(newValue) => { onChangeCallback(k, newValue) }}></Cell>
-                })
-            }
-        </tr>
     )
 }
