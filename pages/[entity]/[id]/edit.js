@@ -5,7 +5,7 @@ import useSWR from 'swr';
 export default function EntityEdit({ entity, object, ...rest }) {
     const groups = useSWR(['groups', ''], readEntities).data;
     const categories = useSWR(['categories', ''], readEntities).data;
-    const attributes = useSWR(['attributes', '', { extra_fields : "name, type, options{title, value, color, image}" }], readEntities).data;
+    const attributes = useSWR(['attributes', '', { extra_fields : "name, type, options{color, text, image}" }], readEntities).data;
     
     if (!groups || !categories || !attributes) return <div />
     return (
@@ -20,6 +20,8 @@ export async function getServerSideProps(context) {
     const param = {};
     if (entity == 'products') {
         param.extra_fields = 'groupID, categoryIDs';
+    } else if (entity == 'attributes') {
+        param.extra_fields = 'name, type, options{color, text, image}';
     }
     props.object = await readEntity(entity, id, param);
 
