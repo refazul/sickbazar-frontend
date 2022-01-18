@@ -9,7 +9,7 @@ import {
 } from '../services/reducers/counterSlice'
 
 export default function Redux() {
-    const count = useSelector(selectCount)
+    const count = useSelector(state => state.count)
     const dispatch = useDispatch()
     const [incrementAmount, setIncrementAmount] = useState('2')
 
