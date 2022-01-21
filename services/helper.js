@@ -1,5 +1,9 @@
 import { API_URL } from './api';
 
+export async function sleep(ms) {
+    return await new Promise(r => setTimeout(r, ms));
+}
+
 export async function http_post(param) {
     const res = await fetch(API_URL,
         {

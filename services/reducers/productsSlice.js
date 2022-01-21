@@ -1,9 +1,14 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { readEntities } from '../entity'
+import { readEntities, removeEntity } from '../entity'
+import { sleep } from '../helper';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
     const response = await readEntities('products', '');
     return response
+})
+export const removeProduct = createAsyncThunk('products/removeProduct', async (id) => {
+    const response = await removeEntity('products', id);
+    return { id };
 })
 
 const initialState = {
@@ -29,6 +34,18 @@ const productsSlice = createSlice({
                 state.products = state.products.concat(action.payload)
             })
             .addCase(fetchProducts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+        builder.addCase(removeProduct.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(removeProduct.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                // createAsyncThunk return value is action.payload
+                state.products = state.products.filter((o) => o.id != action.payload.id)
+            })
+            .addCase(removeProduct.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })
