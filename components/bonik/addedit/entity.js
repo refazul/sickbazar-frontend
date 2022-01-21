@@ -2,8 +2,14 @@ import { CrossAttribute, Dropdown, Form, Input, Select, Submit, Table, Row } fro
 import { singularize, capitalize, isValidHttpUrl } from '../../../services/helper';
 import { s3_upload } from '../../../services/s3client';
 import { useRouter } from 'next/router';
+import { useDispatch } from 'react-redux';
+import { createAttribute } from '../../../services/reducers/attributesSlice';
+import { createCategory } from '../../../services/reducers/categoriesSlice';
+import { createGroup } from '../../../services/reducers/groupsSlice';
+import { createProduct } from '../../../services/reducers/productsSlice';
 
 export function EntityAddEdit({ entity, object, createEntity, updateEntity, groups, categories, attributes }) {
+    const dispatch = useDispatch();
     const router = useRouter();
     const onSubmit = async (data) => {
         const { title, description, groupID, categoryIDs, name, type, options } = data
@@ -19,12 +25,29 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, grou
             input.options = options;
         }
         console.log(input);
+        let res = false;
         
         if (object.id) {
             const result = await updateEntity(entity, object.id, input);
         } else {
-            const result = await createEntity(entity, input);
-            router.push('/' + entity + '/' + result.entity._id + '/edit');
+            switch(entity) {
+                case 'attributes':
+                    res = await dispatch(createAttribute([entity, input]))
+                    break;
+                case 'categories':
+                    res = await dispatch(createCategory([entity, input]))
+                    break;
+                case 'groups':
+                    res = await dispatch(createGroup([entity, input]))
+                    break;
+                case 'products':
+                    res = await dispatch(createProduct([entity, input]))
+                    break;
+            }
+            console.log(res);
+            if (res) {
+                router.push('/' + entity + '/' + res.payload.entity._id + '/edit');
+            }
         }
     }
     return (

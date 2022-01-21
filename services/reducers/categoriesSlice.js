@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { readEntities, removeEntity } from '../entity'
+import { readEntities, removeEntity, createEntity } from '../entity'
 import { sleep } from '../helper';
 
 export const fetchCategories = createAsyncThunk('categories/fetchCategories', async () => {
@@ -9,6 +9,9 @@ export const fetchCategories = createAsyncThunk('categories/fetchCategories', as
 export const removeCategory = createAsyncThunk('categories/removeCategory', async (id) => {
     const response = await removeEntity('categories', id);
     return { id };
+})
+export const createCategory = createAsyncThunk('categories/createCategory', async (params) => {
+    return await createEntity.apply(null, params);
 })
 
 const initialState = {
@@ -46,6 +49,18 @@ const categoriesSlice = createSlice({
                 state.categories = state.categories.filter(o => o.id != action.payload.id)
             })
             .addCase(removeCategory.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+        builder.addCase(createCategory.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(createCategory.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                // createAsyncThunk return value is action.payload
+                state.categories = state.categories.concat(action.payload.entity);
+            })
+            .addCase(createCategory.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

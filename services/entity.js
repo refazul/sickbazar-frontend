@@ -70,7 +70,9 @@ export async function readEntities(entity, title, { extra_fields = '' } = {}) {
     const result = await res.json()
     return result.data['read' + capitalize(entity)];
 }
-export async function createEntity(entity, input) {
+export async function createEntity() {
+    const entity = arguments[0];
+    const input = arguments[1];
     const createEntityQuery = `
     mutation CreateEntity($input: ${capitalize(singularize(entity))}Input) {
         create${capitalize(singularize(entity))}(input: $input) {

@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { readEntities, removeEntity } from '../entity'
+import { readEntities, removeEntity, createEntity } from '../entity'
 import { sleep } from '../helper';
 
 export const fetchGroups = createAsyncThunk('groups/fetchGroups', async () => {
@@ -9,6 +9,9 @@ export const fetchGroups = createAsyncThunk('groups/fetchGroups', async () => {
 export const removeGroup = createAsyncThunk('groups/removeGroup', async (id) => {
     const response = await removeEntity('groups', id);
     return { id };
+})
+export const createGroup = createAsyncThunk('groups/createGroup', async (params) => {
+    return await createEntity.apply(null, params);
 })
 
 const initialState = {
@@ -46,6 +49,18 @@ const groupsSlice = createSlice({
                 state.groups = state.groups.filter((o) => o.id != action.payload.id)
             })
             .addCase(removeGroup.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+        builder.addCase(createGroup.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(createGroup.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                // createAsyncThunk return value is action.payload
+                state.groups = state.groups.concat(action.payload.entity);
+            })
+            .addCase(createGroup.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

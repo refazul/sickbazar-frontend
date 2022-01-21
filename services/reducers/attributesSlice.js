@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { readEntities, removeEntity } from '../entity'
+import { readEntities, removeEntity, createEntity } from '../entity'
 import { sleep } from '../helper';
 
 export const fetchAttributes = createAsyncThunk('attributes/fetchAttributes', async () => {
@@ -9,6 +9,9 @@ export const fetchAttributes = createAsyncThunk('attributes/fetchAttributes', as
 export const removeAttribute = createAsyncThunk('attributes/removeAttribute', async (id) => {
     const response = await removeEntity('attributes', id);
     return { id };
+})
+export const createAttribute = createAsyncThunk('attributes/createAttribute', async (params) => {
+    return await createEntity.apply(null, params);
 })
 
 const initialState = {
@@ -46,6 +49,18 @@ const attributesSlice = createSlice({
                 state.attributes = state.attributes.filter((o) => o.id != action.payload.id)
             })
             .addCase(removeAttribute.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+        builder.addCase(createAttribute.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(createAttribute.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                // createAsyncThunk return value is action.payload
+                state.attributes = state.attributes.concat(action.payload.entity);
+            })
+            .addCase(createAttribute.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })
