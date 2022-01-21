@@ -31,7 +31,7 @@ const categoriesSlice = createSlice({
             .addCase(fetchCategories.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 // Add any fetched posts to the array
-                state.categories = state.categories.concat(action.payload)
+                state.categories = action.payload.concat(state.categories.filter(o => action.payload.map(c => c.id).indexOf(o.id) == -1 ))
             })
             .addCase(fetchCategories.rejected, (state, action) => {
                 state.status = 'failed'
@@ -43,7 +43,7 @@ const categoriesSlice = createSlice({
             .addCase(removeCategory.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 // createAsyncThunk return value is action.payload
-                state.categories = state.categories.filter((o) => o.id != action.payload.id)
+                state.categories = state.categories.filter(o => o.id != action.payload.id)
             })
             .addCase(removeCategory.rejected, (state, action) => {
                 state.status = 'failed'

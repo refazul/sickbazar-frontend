@@ -31,7 +31,7 @@ const productsSlice = createSlice({
             .addCase(fetchProducts.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 // Add any fetched posts to the array
-                state.products = state.products.concat(action.payload)
+                state.products = action.payload.concat(state.products.filter(o => action.payload.map(c => c.id).indexOf(o.id) == -1 ))
             })
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.status = 'failed'

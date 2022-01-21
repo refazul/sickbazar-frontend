@@ -31,7 +31,7 @@ const attributesSlice = createSlice({
             .addCase(fetchAttributes.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 // Add any fetched posts to the array
-                state.attributes = state.attributes.concat(action.payload)
+                state.attributes = action.payload.concat(state.attributes.filter(o => action.payload.map(c => c.id).indexOf(o.id) == -1 ))
             })
             .addCase(fetchAttributes.rejected, (state, action) => {
                 state.status = 'failed'

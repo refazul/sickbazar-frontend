@@ -31,7 +31,7 @@ const groupsSlice = createSlice({
             .addCase(fetchGroups.fulfilled, (state, action) => {
                 state.status = 'succeeded'
                 // Add any fetched posts to the array
-                state.groups = state.groups.concat(action.payload)
+                state.groups = action.payload.concat(state.groups.filter(o => action.payload.map(c => c.id).indexOf(o.id) == -1 ))
             })
             .addCase(fetchGroups.rejected, (state, action) => {
                 state.status = 'failed'
