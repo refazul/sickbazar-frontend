@@ -32,7 +32,10 @@ export async function updateEntity(entity, entityID, input) {
     const result = await res.json()
     return result.data['update' + capitalize(singularize(entity))];
 }
-export async function readEntity(entity, entityID, { extra_fields = '' }) {
+export async function readEntity() {
+    const entity = arguments[0];
+    const entityID = arguments[1];
+    const { extra_fields = '' } = arguments[2];
     const readEntityQuery = `
     query ReadEntity($entityID: ID!) {
         read${capitalize(singularize(entity))}(entityID: $entityID) {

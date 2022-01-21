@@ -44,9 +44,8 @@ export function EntityAddEdit({ entity, object, createEntity, updateEntity, grou
                     res = await dispatch(createProduct([entity, input]))
                     break;
             }
-            console.log(res);
             if (res) {
-                router.push('/' + entity + '/' + res.payload.entity._id + '/edit');
+                router.push('/' + entity + '/');// + res.payload.entity._id + '/edit');
             }
         }
     }

@@ -19,10 +19,8 @@ export default function CategoriesList() {
     }
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchCategories())
-        }
-    }, [status, dispatch])
+        dispatch(fetchCategories())
+    }, [])
 
     let content
     let entity = 'categories'

@@ -19,10 +19,8 @@ export default function AttributesList() {
     }
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchAttributes())
-        }
-    }, [status, dispatch])
+        dispatch(fetchAttributes())
+    }, [])
 
     let content
     let entity = 'attributes'

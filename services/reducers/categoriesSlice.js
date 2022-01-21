@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { readEntities, removeEntity, createEntity } from '../entity'
+import { readEntities, removeEntity, createEntity, readEntity } from '../entity'
 import { sleep } from '../helper';
 
 export const fetchCategories = createAsyncThunk('categories/fetchCategories', async () => {
     const response = await readEntities('categories', '');
     return response
+})
+export const fetchCategory = createAsyncThunk('categories/fetchCategory', async (params) => {
+    return await readEntity.apply(null, params);
 })
 export const removeCategory = createAsyncThunk('categories/removeCategory', async (id) => {
     const response = await removeEntity('categories', id);
@@ -37,6 +40,19 @@ const categoriesSlice = createSlice({
                 state.categories = action.payload.concat(state.categories.filter(o => action.payload.map(c => c.id).indexOf(o.id) == -1 ))
             })
             .addCase(fetchCategories.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+        builder
+            .addCase(fetchCategory.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchCategory.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                // Add any fetched posts to the array
+                state.categories = [action.payload].concat(state.categories.filter(o => action.payload.id != o.id))
+            })
+            .addCase(fetchCategory.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

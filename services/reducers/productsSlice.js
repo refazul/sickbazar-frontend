@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { readEntities, removeEntity, createEntity } from '../entity'
+import { readEntities, removeEntity, createEntity, readEntity } from '../entity'
 import { sleep } from '../helper';
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async () => {
     const response = await readEntities('products', '');
     return response
+})
+export const fetchProduct = createAsyncThunk('products/fetchProduct', async (params) => {
+    return await readEntity.apply(null, params);
 })
 export const removeProduct = createAsyncThunk('products/removeProduct', async (id) => {
     const response = await removeEntity('products', id);
@@ -37,6 +40,19 @@ const productsSlice = createSlice({
                 state.products = action.payload.concat(state.products.filter(o => action.payload.map(c => c.id).indexOf(o.id) == -1 ))
             })
             .addCase(fetchProducts.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+        builder
+            .addCase(fetchProduct.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchProduct.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                // Add any fetched posts to the array
+                state.products = [action.payload].concat(state.products.filter(o => action.payload.id != o.id))
+            })
+            .addCase(fetchProduct.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })

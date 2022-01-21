@@ -1,4 +1,4 @@
-import { EntityAddEdit } from '../../components/bonik/addedit/entity';
+import { EntityAddEdit } from '../../components/bonik/entity/addedit';
 import { createEntity, updateEntity } from '../../services/entity';
 import { useSelector, useDispatch } from 'react-redux'
 import React, { useEffect } from 'react';

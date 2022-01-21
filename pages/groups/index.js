@@ -19,10 +19,8 @@ export default function GroupsList() {
     }
 
     useEffect(() => {
-        if (status === 'idle') {
-            dispatch(fetchGroups())
-        }
-    }, [status, dispatch])
+        dispatch(fetchGroups())
+    }, [])
 
     let content
     let entity = 'groups'

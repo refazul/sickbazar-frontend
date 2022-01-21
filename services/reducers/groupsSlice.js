@@ -1,10 +1,13 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
-import { readEntities, removeEntity, createEntity } from '../entity'
+import { readEntities, removeEntity, createEntity, readEntity } from '../entity'
 import { sleep } from '../helper';
 
 export const fetchGroups = createAsyncThunk('groups/fetchGroups', async () => {
     const response = await readEntities('groups', '');
     return response
+})
+export const fetchGroup = createAsyncThunk('groups/fetchGroup', async (params) => {
+    return await readEntity.apply(null, params);
 })
 export const removeGroup = createAsyncThunk('groups/removeGroup', async (id) => {
     const response = await removeEntity('groups', id);
@@ -37,6 +40,19 @@ const groupsSlice = createSlice({
                 state.groups = action.payload.concat(state.groups.filter(o => action.payload.map(c => c.id).indexOf(o.id) == -1 ))
             })
             .addCase(fetchGroups.rejected, (state, action) => {
+                state.status = 'failed'
+                state.error = action.error.message
+            })
+        builder
+            .addCase(fetchGroup.pending, (state, action) => {
+                state.status = 'loading'
+            })
+            .addCase(fetchGroup.fulfilled, (state, action) => {
+                state.status = 'succeeded'
+                // Add any fetched posts to the array
+                state.groups = [action.payload].concat(state.groups.filter(o => action.payload.id != o.id))
+            })
+            .addCase(fetchGroup.rejected, (state, action) => {
                 state.status = 'failed'
                 state.error = action.error.message
             })
