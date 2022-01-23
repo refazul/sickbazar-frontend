@@ -1,4 +1,5 @@
 import { Image, Options } from "../elements";
+import { color_array, size_array } from "../../../data";
 
 export function EntityDetail({ entity, object }) {
     return (
@@ -22,7 +23,7 @@ export function EntityDetail({ entity, object }) {
                                 </div>
                             </div>
                         </div>
-                        <Options options={{ color_array, size_array }} onClick={onAddToCart}></Options>
+                        <Options options={{ color_array, size_array }} ></Options>
                     </div> : <div></div>
                 }
             </div>

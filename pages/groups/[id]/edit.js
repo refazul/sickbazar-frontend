@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import { EntityAddEdit } from '../../../components/bonik/entity/addedit';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchGroup } from '../../services/reducers/groupsSlice';
-import { EntityDetail } from '../../components/bonik/entity/detail';
+import { fetchGroup, updateGroup } from '../../../services/reducers/groupsSlice';
 
-export default function GroupDetail({ id }) {
-    const router = useRouter();
+
+export default function GroupEdit({ id }) {
+    const entity = 'groups'
     const dispatch = useDispatch()
 
     const group = useSelector(state => state.groups.groups.find(a => a.id === id))
@@ -16,20 +16,22 @@ export default function GroupDetail({ id }) {
         dispatch(fetchGroup([entity, id, {}]))
     }, [])
 
+    const updateGroupCallback = async (entity, entityID, input) => {
+        dispatch(updateGroup([entity, entityID, input]))
+    }
+
     let content
-    let entity = 'groups'
 
     if (status === 'loading') {
         content = <div>"Loading..."</div>
     } else if (status === 'succeeded') {
-        content = <EntityDetail entity={entity} object={group}/>
+        content = <EntityAddEdit entity={entity} object={group} updateEntity={updateGroupCallback} />
     } else if (status === 'failed') {
         content = <div>{error}</div>
     }
+
     return (
-        <div className="bg-white">
-            {content}
-        </div>
+        <div>{content}</div>
     )
 }
 

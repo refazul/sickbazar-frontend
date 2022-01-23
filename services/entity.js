@@ -3,9 +3,7 @@ import { http_post, capitalize, singularize } from "./helper";
 export async function removeEntity(entity, entityID) {
     const removeEntityQuery = `
     mutation Mutation($entityID: ID!) {
-        delete${capitalize(singularize(entity))}(entityID: $entityID) {
-            success
-        }
+        delete${capitalize(singularize(entity))}(entityID: $entityID)
     }  
     `
     const variables = {
@@ -13,14 +11,16 @@ export async function removeEntity(entity, entityID) {
     }
     const res = await http_post({ query: removeEntityQuery, variables })
     const result = await res.json()
-    return result;
+    return result.data['delete' + capitalize(singularize(entity))];
 }
 export async function updateEntity(entity, entityID, input) {
     const updateEntityQuery = `
     mutation Mutation($entityID: ID!, $input: ${capitalize(singularize(entity))}Input) {
         update${capitalize(singularize(entity))}(entityID: $entityID, input: $input) {
-            success
-            entity
+            title
+            description
+            image
+            id
         }
     }
     `
@@ -79,8 +79,10 @@ export async function createEntity() {
     const createEntityQuery = `
     mutation CreateEntity($input: ${capitalize(singularize(entity))}Input) {
         create${capitalize(singularize(entity))}(input: $input) {
-            success
-            entity
+            title
+            description
+            image
+            id
         }
     }
     `
