@@ -366,40 +366,61 @@ export function Table({ object, rows = [], columns, register, name, setValue, ..
         setRecords(newRecords)
         setValue(name, newRecords);
     }
+    function onAdd() {
+        const newRecords = Object.keys(records).map(key => records[key]);
+        newRecords.push(columns.map(c => c.value).reduce(function (a, b) {
+            var x = {};
+            var y = {};
+            typeof a === 'object' ? x = a : x[a] = '';
+            y[b] = '';
+            return { ...x, ...y }
+        }))
+        setRecords(newRecords);
+        setValue(name, newRecords);
+    }
+    function onDelete(row, index) {
+    }
     return (
-        <div className="flex flex-col" {...register(name)} {...rest}>
-            <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                    <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    {
-                                        columns.map((column, i) => {
-                                            return (
-                                                <th key={i} scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                                    {column.title}
-                                                </th>
-                                            )
-                                        })
-                                    }
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {
-                                    Object.keys(records).map((row, index) => {
-                                        return <Row key={index} index={index} row={records[row]} callback={callback} />
-                                    })
-                                }
-                            </tbody>
-                        </table>
+        <div className="w-full p-3">
+            <div className="relative w-full">
+                <div className="flex flex-col" {...register(name)} {...rest}>
+                    <div className="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div className="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div className="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <table className="min-w-full divide-y divide-gray-200">
+                                    <thead className="bg-gray-50">
+                                        <tr>
+                                            {
+                                                columns.map((column, i) => {
+                                                    return (
+                                                        <th key={i} scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                            {column.title}
+                                                        </th>
+                                                    )
+                                                })
+                                            }
+                                        </tr>
+                                    </thead>
+                                    <tbody className="bg-white divide-y divide-gray-200">
+                                        {
+                                            Object.keys(records).map((row, index) => {
+                                                return <Row key={index} index={index} row={records[row]} callback={callback} onDelete={onDelete} />
+                                            })
+                                        }
+                                    </tbody>
+                                </table>
+                                <div className="grid justify-items-center p-3">
+                                    <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={(e) => { e.preventDefault(); onAdd() }}>Add</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     )
 }
-export function Row({ row, index, callback }) {
+export function Row({ row, index, callback, onDelete }) {
     return (
         <tr>
             {
@@ -407,6 +428,9 @@ export function Row({ row, index, callback }) {
                     return <Cell key={i} editable={true} initValue={row[cell]} onChangeCallback={(newValue) => { callback(index, cell, newValue) }}></Cell>
                 })
             }
+            <div className="px-6 py-4">
+                <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" onClick={(e) => { e.preventDefault(); onDelete(row, index) }}>Delete</button>
+            </div>
         </tr>
     )
 }

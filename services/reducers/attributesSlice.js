@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { readEntities, removeEntity, createEntity, readEntity, updateEntity } from '../entity'
-import { sleep } from '../helper';
+import { capitalize, http_post, singularize, sleep } from '../helper';
 
 export const fetchAttributes = createAsyncThunk('attributes/fetchAttributes', async () => {
     return await readEntities('attributes', '');
@@ -15,7 +15,29 @@ export const createAttribute = createAsyncThunk('attributes/createAttribute', as
     return await createEntity.apply(null, params);
 })
 export const updateAttribute = createAsyncThunk('attributes/updateAttribute', async (params) => {
-    return await updateEntity.apply(null, params);
+    const entity = params[0];
+    const entityID = params[1];
+    const input = params[2];
+    const updateEntityQuery = `
+    mutation Mutation($entityID: ID!, $input: ${capitalize(singularize(entity))}Input) {
+        update${capitalize(singularize(entity))}(entityID: $entityID, input: $input) {
+            title
+            description
+            image
+            id
+            name
+            type
+            options { color, text, image }
+        }
+    }
+    `
+    const variables = {
+        "entityID": entityID,
+        "input": input
+    }
+    const res = await http_post({ query: updateEntityQuery, variables })
+    const result = await res.json()
+    return result.data['update' + capitalize(singularize(entity))];
 })
 
 const initialState = {
