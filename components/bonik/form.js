@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, Fragment, useEffect } from "react";
 import formstyles from './form.module.css';
 import globalstyles from './global.module.css';
 import { useForm } from 'react-hook-form';
@@ -352,13 +352,16 @@ export function Submit({ text }) {
 }
 
 export function Table({ object, rows = [], columns, register, name, setValue, ...rest }) {
-    const [records, setRecords] = useState(rows);
+    const [records, setRecords] = useState([]);
+    useEffect(() => {
+        setRecords(rows);
+    }, [])
     function callback(index, key, newValue) {
         const newRecord = {
             ...records[index],
         }
         newRecord[key] = newValue
-        const newRecords = Object.assign({}, records);
+        const newRecords = Object.keys(records).map(key => records[key]);//Object.assign({}, records);
         newRecords[index] = newRecord
         setRecords(newRecords)
         setValue(name, newRecords);
