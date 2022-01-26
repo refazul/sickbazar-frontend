@@ -2,11 +2,52 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { readEntities, removeEntity, createEntity, readEntity, updateEntity } from '../entity'
 import { capitalize, http_post, singularize, sleep } from '../helper';
 
-export const fetchAttributes = createAsyncThunk('attributes/fetchAttributes', async () => {
-    return await readEntities('attributes', '');
+export const fetchAttributes = createAsyncThunk('attributes/fetchAttributes', async (params) => {
+    const entity = 'attributes';
+    const title = params[0] || '';
+    
+    const readEntitiesQuery = `
+    query readEntities($title: String!) {
+        read${capitalize(entity)}(title: $title) {
+            title
+            description
+            image
+            id
+            name
+            type
+            options { color, text, image }
+        }
+    }
+    `
+    const variables = {
+        "title": title
+    }
+    const res = await http_post({ query: readEntitiesQuery, variables })
+    const result = await res.json()
+    return result.data['read' + capitalize(entity)];
 })
 export const fetchAttribute = createAsyncThunk('attributes/fetchAttribute', async (params) => {
-    return await readEntity.apply(null, params);
+    const entity = 'attributes';
+    const entityID = arguments[0];
+    const readEntityQuery = `
+    query ReadEntity($entityID: ID!) {
+        read${capitalize(singularize(entity))}(entityID: $entityID) {
+            title
+            description
+            image
+            id
+            name
+            type
+            options { color, text, image }
+        }
+    }
+    `
+    const variables = {
+        "entityID": entityID
+    }
+    const res = await http_post({ query: readEntityQuery, variables })
+    const result = await res.json()
+    return result.data['read' + capitalize(singularize(entity))];
 })
 export const removeAttribute = createAsyncThunk('attributes/removeAttribute', async (id) => {
     return await removeEntity('attributes', id);
@@ -15,9 +56,10 @@ export const createAttribute = createAsyncThunk('attributes/createAttribute', as
     return await createEntity.apply(null, params);
 })
 export const updateAttribute = createAsyncThunk('attributes/updateAttribute', async (params) => {
-    const entity = params[0];
-    const entityID = params[1];
-    const input = params[2];
+    const entity = 'attributes';
+    const entityID = params[0];
+    const input = params[1];
+
     const updateEntityQuery = `
     mutation Mutation($entityID: ID!, $input: ${capitalize(singularize(entity))}Input) {
         update${capitalize(singularize(entity))}(entityID: $entityID, input: $input) {

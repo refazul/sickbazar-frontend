@@ -1,10 +1,12 @@
-import { EntityAddEdit } from '../../../components/bonik/entity/addedit';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchProduct, updateProduct } from '../../../services/reducers/productsSlice';
 import { fetchGroups } from '../../../services/reducers/groupsSlice';
 import { fetchCategories } from '../../../services/reducers/categoriesSlice';
 import { fetchAttributes } from '../../../services/reducers/attributesSlice';
+import { CrossAttribute, Dropdown, Form, Input, Select, Submit } from '../../../components/bonik/form';
+import { capitalize, isValidHttpUrl, singularize } from '../../../services/helper';
+import { s3_upload } from '../../../services/s3client';
 
 
 export default function ProductEdit({ id }) {
@@ -24,14 +26,20 @@ export default function ProductEdit({ id }) {
     const attribute_status = useSelector(state => state.attributes.status)
 
     useEffect(() => {
-        dispatch(fetchProduct([entity, id, { }]))
+        dispatch(fetchProduct([entity, id, {}]))
         dispatch(fetchGroups())
         dispatch(fetchCategories())
-        dispatch(fetchAttributes())
+        dispatch(fetchAttributes(['']))
     }, [])
 
-    const updateProductCallback = async (entity, entityID, input) => {
-        dispatch(updateProduct([entity, entityID, input]))
+    const updateProductCallback = async (data) => {
+        const { title, description, groupID, categoryIDs } = data
+        const image = isValidHttpUrl(data.image) ? data.image : (data.image && data.image.length > 0 ? await s3_upload(data.image[0]) : product.image);
+
+        const input = { title, description, image, groupID, categoryIDs }
+        console.log(input);
+
+        dispatch(updateProduct([entity, id, input]))
     }
 
     if (group_status != 'succeeded' || category_status != 'succeeded' || attribute_status != 'succeeded') return <div />
@@ -41,7 +49,32 @@ export default function ProductEdit({ id }) {
     if (status === 'loading') {
         content = <div>"Loading..."</div>
     } else if (status === 'succeeded') {
-        content = <EntityAddEdit entity={entity} object={product} updateEntity={updateProductCallback} groups={groups} categories={categories} attributes={attributes} />
+        content =
+            <Form onSubmitCallback={updateProductCallback} defaultValues={product} title={"Edit " + capitalize(singularize(entity))} buttonText={"Back to " + capitalize(singularize(entity)) + " List"} buttonOnClick={() => { router.push('/' + entity) }}>
+                <Input name="title" placeholder="Title" />
+                <Input name="description" placeholder="Description" />
+                <Input name="image" type="file" />
+                <Select title="Group" name="groupID" options={
+                    groups.map(g => {
+                        const r = { title: g.title, value: g.id };
+                        if (product.groupID == g.id) {
+                            r.selected = true;
+                        }
+                        return r;
+                    })
+                } />
+                <Dropdown name="categoryIDs" title="Categories" options={
+                    categories.map(c => {
+                        const r = { title: c.title, value: c.id };
+                        if (product.categoryIDs && product.categoryIDs.indexOf(c.id) > -1) {
+                            r.selected = true;
+                        }
+                        return r;
+                    })
+                } />
+                <CrossAttribute attributes={attributes.map(a => ({ ...a, value: a.name }))} title="Attributes" />
+                <Submit text="Save" />
+            </Form>
     } else if (status === 'failed') {
         content = <div>{error}</div>
     }

@@ -186,24 +186,36 @@ function Variant({ variant, onChange }) {
 }
 
 export function CrossAttribute({ attributes, title }) {
-    const [attrs, setAttrs] = useState(attributes.filter(c => c.selected))
+    const [attrs, setAttrs] = useState([])
+    const [options, setOptions] = useState({});
     const [cross, setCross] = useState([])
+
+    useEffect(() => {
+        setAttrs(attributes.filter(c => c.selected))
+    }, [])
+    useEffect(() => {
+        const selected_options = Object.keys(options).map(k => {
+            return options[k].map(o => ({...o, id: k}))
+        });
+        setCross(cartesianProduct(selected_options));
+    }, [options])
+    useEffect(() => {
+        console.log(cross);
+    }, [cross])
+
     function onAttrUpdate(attributes) {
         const selected_attrs = attributes.filter(c => c.selected);
         setAttrs(selected_attrs);
     }
-    function onVariantUpdate(variants) {
-        var selected_options = [];
-        attrs.forEach(attr => {
-            selected_options.push(attr.options.filter(o => o.selected))//map;
-        });
-        setCross(cartesianProduct(selected_options));
+    function onVariantUpdate(id, choices) {
+        // attrs = selected attrs
+        setOptions({ ...options, [id]: choices.filter(c => c.selected) })
     }
     return (
         <div className="w-full">
             <Dropdown options={attributes} title={title} onChoiceUpdate={onAttrUpdate} />
             {
-                attrs.map(attr => <Dropdown key={attr.value} options={attr.options} title={attr.title} onChoiceUpdate={onVariantUpdate} />)
+                attrs.map(attr => <Dropdown key={attr.value} options={attr.options.map(o => { return { ...o, value: (attr.type == 'color' ? o.color : attr.type == 'text' ? o.text : o.image), title: (attr.type == 'color' ? o.color : attr.type == 'text' ? o.text : o.image) } })} title={attr.title} onChoiceUpdate={(choices) => { onVariantUpdate(attr.id, choices) }} />)
             }
             <Variants cross={cross} />
         </div>
@@ -214,9 +226,14 @@ export function Dropdown({ register, options, name, title, setValue, onChoiceUpd
     function isOpen() { return visible }
     function toggle() { setVisible(!visible) }
 
-    const [choices, setChoices] = useState(options);
+    const [choices, setChoices] = useState([]);
     const [visible, setVisible] = useState(false);
     const [filter, setFilter] = useState('');
+
+    useEffect(() => {
+        setChoices(options);
+    }, [])
+
     return (
         <div className="w-1/2 p-3">
             <div className="relative w-full">

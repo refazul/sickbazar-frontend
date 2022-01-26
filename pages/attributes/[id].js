@@ -13,7 +13,7 @@ export default function AttributeDetail({ id }) {
     const error = useSelector(state => state.attributes.error)
 
     useEffect(() => {
-        dispatch(fetchAttribute([entity, id, {}]))
+        dispatch(fetchAttribute([id]))
     }, [])
 
     let content
